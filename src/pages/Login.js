@@ -1,4 +1,3 @@
-// src/components/Login.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -10,11 +9,14 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const notify = () => toast("Login failed");
+  const [loading, setLoading] = useState(false); // Add loading state
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
+      setLoading(true); // Start loading before request
+
       const response = await axios.post(
         "https://api-tltn.onrender.com/api/v1/user/login",
         {
@@ -30,21 +32,23 @@ const Login = () => {
         localStorage.setItem("token", data.token);
         localStorage.setItem("userId", data.id);
         localStorage.setItem("userName", data.userName);
-
         localStorage.setItem("phoneNumber", data.phoneNumber);
         localStorage.setItem("address", data.address);
         localStorage.setItem("fullName", data.fullName);
 
         // Navigate to the user profile page
-        toast.success("Login successfull");
+        toast.success("Login successful");
         navigate("/");
       } else {
-        toast.error("Login failed");
+        toast.error("Email or password is incorrect");
       }
     } catch (error) {
-      toast.error("Login failed");
+      toast.error("Email or password is incorrect");
+    } finally {
+      setLoading(false); // Stop loading after request completes
     }
   };
+
   return (
     <div className="login-page">
       <ToastContainer />
@@ -66,7 +70,9 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">Log In</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Logging in..." : "Log In"}
+          </button>
         </form>
         <div className="login-link">
           <p>New to Booking?</p>

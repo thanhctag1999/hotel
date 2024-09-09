@@ -6,7 +6,7 @@ import List_Hotel from "../components/List_Hotel/list_hotel";
 const Home = () => {
   return (
     <div className="page-container">
-      <HeroCover title="hello" desc="description" />
+      <HeroCover title="welcome" desc="desc" />
       <List_Hotel />
     </div>
   );

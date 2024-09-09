@@ -1,14 +1,25 @@
 .hero_cover {
-  background-image: url("https://images.fineartamerica.com/images-medium-large-5/santorini-panorama-androklis-nerantzoulis.jpg");
-  height: 300px;
+  background-color: #003b95;
+  height: 280px;
   background-size: cover;
+  padding: 20px 20px 0px 100px;
+}
+@media (max-width: 768px) {
+  .hero_cover {
+      padding: 20px 20px 0px 20px;
+    }
 }
 .hero-title {
   padding-top: 20px;
+  color: #fff;
+  display: block;
+}
+.hero-title h1{
+  font-size: 46px;
 }
 .hero-title h1,
 h4 {
-  display: flex;
+  color: #fff;
   justify-content: center;
 }
 .search_box {
@@ -17,14 +28,31 @@ h4 {
   justify-content: center;
   align-items: baseline;
 }
+@media (max-width: 768px) {
+  .search_box {
+    align-items: center;
+    position: relative;
+  }
+  .search_box button{
+    width: 100% !important;
+    border-radius: 20px !important;
+  }
+}
 .search_box input {
-  width: 15%;
-  height: 20px;
+  height: 30px;
   border: solid 2px rgb(255, 102, 0);
+  outline: none;
   margin: 2px;
 }
 .search_box button {
   margin-left: 10px;
-  width: 5%;
-  height: 40px;
+  width: 6%;
+  height: 50px;
+  background-color: rgb(255, 102, 0);
+}
+.search_box button:hover {
+  margin-left: 10px;
+  width: 6%;
+  height: 50px;
+  background-color: rgb(255, 123, 36);
 }

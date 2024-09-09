@@ -1,7 +1,7 @@
 /* src/styles.css */
 header {
-  padding: 10px 10px 0px 10px;
-  background-color: #0056b3;
+  padding: 20px 100px 10px 100px;
+  background-color: #003b95;
 }
 
 nav ul {
@@ -15,8 +15,18 @@ body {
   margin: 0;
   font-family: "Montserrat", sans-serif;
 }
+.header-link {
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 10px;
+}
+
+.active {
+  border: 1px solid white;
+  border-radius: 25px;
+  padding: 10px 15px;
+}
 .header-items {
-  margin-left: 50px;
   display: flex;
   justify-content: space-between;
 }
@@ -25,7 +35,7 @@ body {
   justify-content: space-between;
 }
 .header-logo {
-  width: 62%;
+  width: 100%;
   text-decoration: none;
   color: #fff;
   cursor: pointer;
@@ -54,6 +64,19 @@ body {
   margin-right: 10px;
   cursor: pointer;
 }
+@media (max-width: 768px) {
+  header {
+      padding: 20px 10px 10px 10px;
+      background-color: #003b95;
+    }
+  .header-icon {
+    width: 100%;
+  }
+  .header-link {
+    margin-right: 5px;
+    font-size: 10px;
+  }
+}
 .page-container {
   margin: 0;
 }
@@ -78,7 +101,7 @@ body {
 }
 .page-sidebar-title a,
 h4 {
-  color: #222;
+  color: #fff;
   font-size: 18px;
   text-decoration: none;
 }
@@ -167,4 +190,118 @@ h4 {
   overflow: hidden;
   text-overflow: ellipsis;
   max-height: calc(1.2em * 2);
+}
+.language-dropdown{
+  padding: 5px;
+    background-color: transparent;
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+}
+.country-flag {
+  width: 32px;
+  height: 22px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.language-select-form{
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.language-dropdown {
+  background-color: transparent;
+  /* Dark background */
+  color: white;
+  /* Text color for options */
+  border: none;
+  outline: none;
+  padding: 5px;
+}
+
+.language-dropdown option {
+  background-color: #333;
+  color: white;
+}
+
+/* To ensure compatibility on different platforms (especially Windows) */
+.language-dropdown::-ms-expand {
+  background-color: #333;
+  color: white;
+}
+.page-container input{
+    min-width: 15%;
+    height: 30px;
+    padding: 10px;
+    padding-left: 20px;
+    margin: 10px 5px;
+    border: 3px solid #ec6a00;
+    border-radius: 25px;
+}
+.page-container button {
+  height: 50px;
+  padding: 10px;
+  background-color: #ec6a00;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.page-container button:hover{
+  background-color: #ff8521;
+  height: 50px;
+}
+
+/* Modal styles */
+.location-modal {
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.location-modal-content {
+  background: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 500px;
+    max-height: 400px;
+    /* Set max height for the modal */
+    overflow-y: auto;
+    /* Enable vertical scrolling if content exceeds max height */
+    position: relative;
+}
+
+.location-close {
+  position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 3em;
+    cursor: pointer;
+}
+.location-modal ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.location-modal li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.location-modal li:hover {
+  background-color: #8abdff;
+  /* Optional: highlight item on hover */
 }

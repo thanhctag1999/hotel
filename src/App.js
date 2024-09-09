@@ -1,7 +1,6 @@
 // src/App.js
 import React, { useState } from "react";
 import { I18nProvider, LOCALES } from "./i18n";
-import { FormattedMessage } from "react-intl";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";

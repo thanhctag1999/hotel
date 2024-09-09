@@ -9,13 +9,18 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
-import * as React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import bell from "../assests/icons/bell.png";
-import language from "../assests/icons/language.png";
 import logo from "../assests/logos/logo.png";
+import us from "../assests/icons/us.png";
+import vn from "../assests/icons/vn.png";
+import { FormattedMessage } from "react-intl";
+
 
 const Header = ({ changeLanguage }) => {
+  const [language, setLanguage] = useState("en-US");
+  const [flagSrc, setFlagSrc] = useState(us); // default flag
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -30,6 +35,20 @@ const Header = ({ changeLanguage }) => {
     localStorage.clear();
     navigate("/");
   };
+  const handleChange = (event) => {
+    const selectedLanguage = event.target.value;
+    setLanguage(selectedLanguage);
+    changeLanguage(selectedLanguage);
+
+    // Update the flag image based on the selected language
+    switch (selectedLanguage) {
+      case "vi-VN":
+        setFlagSrc(vn);
+        break
+      default:
+        setFlagSrc(us);
+    }
+  };
   return (
     <header>
       <div className="header-logos">
@@ -40,9 +59,20 @@ const Header = ({ changeLanguage }) => {
           <li className="header-icon icon-text">
             <b>VND</b>
           </li>
-          <li className="header-icon" onClick={() => changeLanguage("fr-CA")}>
-            <img className="header-icon" src={language} alt="Logo" />
-          </li>
+          <div className="header-icon language-select-form">
+            {/* Flag image */}
+            <img src={flagSrc} alt="Country flag" className="country-flag" />
+
+            {/* Language dropdown */}
+            <select
+              value={language}
+              onChange={handleChange}
+              className="language-dropdown"
+            >
+              <option value="en-US">English</option>
+              <option value="vi-VN">Tiếng việt</option>
+            </select>
+          </div>
           <li className="header-icon">
             <img className="header-icon" src={bell} alt="Logo" />
           </li>
@@ -51,24 +81,41 @@ const Header = ({ changeLanguage }) => {
       <nav className="header-items">
         <ul className="header-links">
           <li>
-            <Link className="header-link" to="/">
-              Home
-            </Link>
+            <NavLink
+              className="header-link"
+              to="/"
+              activeClassName="active-link"
+              exact
+            >
+              <FormattedMessage id="home" defaultMessage="home" />
+            </NavLink>
           </li>
           <li>
-            <Link className="header-link" to="/hotels">
-              Hotels
-            </Link>
+            <NavLink
+              className="header-link"
+              to="/hotels"
+              activeClassName="active-link"
+            >
+              <FormattedMessage id="hotels" defaultMessage="hotels" />
+            </NavLink>
           </li>
           <li>
-            <Link className="header-link" to="/about">
-              About us
-            </Link>
+            <NavLink
+              className="header-link"
+              to="/about"
+              activeClassName="active-link"
+            >
+              <FormattedMessage id="about" defaultMessage="about" />
+            </NavLink>
           </li>
           <li>
-            <Link className="header-link" to="/contact">
-              Contact
-            </Link>
+            <NavLink
+              className="header-link"
+              to="/contact"
+              activeClassName="active-link"
+            >
+              <FormattedMessage id="contact" defaultMessage="contact" />
+            </NavLink>
           </li>
         </ul>
         <React.Fragment>
@@ -90,7 +137,8 @@ const Header = ({ changeLanguage }) => {
               </Tooltip>
             ) : (
               <Link className="header-link" to="/login">
-                Login / Register
+                <FormattedMessage id="login" defaultMessage="login" /> /
+                <FormattedMessage id="register" defaultMessage="register" />
               </Link>
             )}
           </Box>
@@ -133,7 +181,8 @@ const Header = ({ changeLanguage }) => {
           >
             <Link className="link" to="/profile">
               <MenuItem>
-                <Avatar /> Profile
+                <Avatar />{" "}
+                <FormattedMessage id="profile" defaultMessage="profile" />
               </MenuItem>
             </Link>
             <Divider />
@@ -141,13 +190,13 @@ const Header = ({ changeLanguage }) => {
               <ListItemIcon>
                 <Settings fontSize="small" />
               </ListItemIcon>
-              Settings
+              <FormattedMessage id="setting" defaultMessage="setting" />
             </MenuItem>
             <MenuItem onClick={hanldeLogout}>
               <ListItemIcon>
                 <Logout fontSize="small" />
               </ListItemIcon>
-              Logout
+              <FormattedMessage id="logout" defaultMessage="logout" />
             </MenuItem>
           </Menu>
         </React.Fragment>
