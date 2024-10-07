@@ -1,0 +1,20 @@
+.create_hotel_form{
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    width: 50%;
+    display: block;
+    margin: auto;
+}
+.column{
+    display: flex;
+    flex-direction: column;
+}
+.create_hotel_form input{
+    border: solid 1px #222;
+    border-radius: 15px;
+}
+.checkbox{
+    width: 20px;
+    height: 20px !important;
+}

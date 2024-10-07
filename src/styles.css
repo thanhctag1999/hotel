@@ -15,6 +15,10 @@ body {
   margin: 0;
   font-family: "Montserrat", sans-serif;
 }
+.page-container{
+  padding: 30px;
+  background-color: #f5f5f5;
+}
 .header-link {
   color: #fff;
   text-decoration: none;
@@ -155,12 +159,13 @@ h4 {
   padding-top: 50px;
 }
 .list-hotel-img {
-  max-width: 350px;
+  width: 250px;
   height: 200px;
   object-fit: cover;
   border-radius: 15px;
 }
 .list-hotel-contain {
+  width: 80%;
   height: 200px;
   margin-left: 20px;
   display: flex;
@@ -168,6 +173,7 @@ h4 {
   align-items: start;
 }
 .list-hotel-contain h4 {
+  color: #222;
   margin: 0;
 }
 .icon {
@@ -304,4 +310,13 @@ h4 {
 .location-modal li:hover {
   background-color: #8abdff;
   /* Optional: highlight item on hover */
+}
+.flex-hotel{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+.hotel-list-item{
+  text-decoration: none;
+  color: #000;
 }

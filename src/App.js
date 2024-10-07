@@ -11,6 +11,9 @@ import Layout from "./components/Layout";
 import Hotel from "./pages/Hotel";
 import Profile from "./pages/Profile";
 import "./styles.css";
+import RegisterHotel from "./pages/Register_Hotel/Register_Hotel";
+import ManageHotel from "./pages/Manage_Hotel/Manage_Hotel";
+import HotelDetail from "./pages/Hotel_detail";
 
 function App() {
   const [locale, setLocale] = useState(LOCALES.ENGLISH);
@@ -31,6 +34,14 @@ function App() {
             element={
               <Layout changeLanguage={changeLanguage}>
                 <Hotel />
+              </Layout>
+            }
+          />
+          <Route
+            path="/hotel_detail"
+            element={
+              <Layout changeLanguage={changeLanguage}>
+                <HotelDetail />
               </Layout>
             }
           />
@@ -63,6 +74,22 @@ function App() {
             element={
               <Layout changeLanguage={changeLanguage}>
                 <Contact />
+              </Layout>
+            }
+          />
+          <Route
+            path="/register_hotel"
+            element={
+              <Layout changeLanguage={changeLanguage}>
+                <RegisterHotel />
+              </Layout>
+            }
+          />
+          <Route
+            path="/manage_hotel"
+            element={
+              <Layout changeLanguage={changeLanguage}>
+                <ManageHotel />
               </Layout>
             }
           />
