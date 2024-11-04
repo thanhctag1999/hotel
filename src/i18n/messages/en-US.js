@@ -8,6 +8,7 @@ export default {
   auth: "Check mail to authentication",
   profile: "Profile",
   setting: "Setting",
+  history: "Booking History",
   login: "Login",
   register: "Register",
   register_hotel: "Register your hotel",

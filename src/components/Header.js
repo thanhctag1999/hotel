@@ -111,10 +111,13 @@ const Header = ({ changeLanguage }) => {
           <li>
             <NavLink
               className="header-link"
-              to="/contact"
+              to="/register_hotel"
               activeClassName="active-link"
             >
-              <FormattedMessage id="contact" defaultMessage="contact" />
+              <FormattedMessage
+                id="register_hotel"
+                defaultMessage="register_hotel"
+              />
             </NavLink>
           </li>
         </ul>
@@ -194,12 +197,14 @@ const Header = ({ changeLanguage }) => {
               </MenuItem>
             </Link>
             <Divider />
-            <MenuItem onClick={handleClose}>
-              <ListItemIcon>
-                <Settings fontSize="small" />
-              </ListItemIcon>
-              <FormattedMessage id="setting" defaultMessage="setting" />
-            </MenuItem>
+            <Link className="link" to="/booking-history">
+              <MenuItem>
+                <ListItemIcon>
+                  <Settings fontSize="small" />
+                </ListItemIcon>
+                <FormattedMessage id="history" defaultMessage="history" />
+              </MenuItem>
+            </Link>
             <MenuItem onClick={hanldeLogout}>
               <ListItemIcon>
                 <Logout fontSize="small" />

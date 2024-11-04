@@ -68,7 +68,7 @@ const RegisterHotel = () => {
     // }
   };
   return (
-    <div className="register_hotel flex">
+    <div className="register_hotel flex-container">
       <div className="register_hotel_title">
         <h1>
           <FormattedMessage

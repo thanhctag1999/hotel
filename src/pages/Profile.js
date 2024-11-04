@@ -1,11 +1,9 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const Profile = () => {
-  const navigate = useNavigate();
   const [phone, setPhone] = useState(
     localStorage.getItem("phoneNumber") !== "undefined"
       ? localStorage.getItem("phoneNumber")

@@ -8,6 +8,7 @@ export default {
   auth: "Kiểm tra email để xác thực tài khoản",
   profile: "Cá nhân",
   setting: "Cài đặt",
+  history: "Lịch sử đặt phòng",
   login: "Đăng nhập",
   register: "Đăng ký",
   register_hotel: "Đăng ký khách sạn của bạn",

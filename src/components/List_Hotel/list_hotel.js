@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Rating from "@mui/material/Rating";
-import locationIcon from "../../assests/icons/location.png"; // Changed variable name to avoid conflict
-import { Link } from "react-router-dom";
 import {
   CircularProgress,
-  TextField,
+  FormControl,
   MenuItem,
   Select,
-  FormControl,
-  InputLabel,
+  TextField
 } from "@mui/material"; // Import necessary components
+import Rating from "@mui/material/Rating";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import locationIcon from "../../assests/icons/location.png"; // Changed variable name to avoid conflict
 
 export default function List_Hotel() {
   const [hotels, setHotels] = useState([]);
@@ -66,7 +65,10 @@ export default function List_Hotel() {
     const locationMatches = selectedLocation
       ? hotel.location === selectedLocation
       : true;
-    const ratingMatches = hotel.rating >= ratingFilter; // Adjust rating matching
+
+    // Exact star rating match (if ratingFilter is selected)
+    const ratingMatches =
+      ratingFilter > 0 ? parseFloat(hotel.rating) === ratingFilter : true;
 
     return (
       (hotelName.includes(filterText.toLowerCase()) ||
@@ -94,53 +96,57 @@ export default function List_Hotel() {
   return (
     <div className="page-hotel">
       <h2>Hot Booking</h2>
-      <TextField
-        variant="outlined"
-        placeholder="Filter by hotel name or description"
-        value={filterText}
-        onChange={(e) => setFilterText(e.target.value)} // Update filter text on input change
-        fullWidth
-        style={{ marginBottom: "20px" }} // Add some spacing
-      />
+      <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
+        <TextField
+          className="seachInput"
+          variant="outlined"
+          placeholder="Filter by hotel name or description"
+          value={filterText}
+          onChange={(e) => setFilterText(e.target.value)} // Update filter text on input change
+          fullWidth
+        />
 
-      <FormControl fullWidth style={{ marginBottom: "20px" }}>
-        <InputLabel id="location-select-label">Location</InputLabel>
-        <Select
-          labelId="location-select-label"
-          value={selectedLocation}
-          onChange={(e) => setSelectedLocation(e.target.value)} // Update selected location
-          displayEmpty
-        >
-          <MenuItem value="">
-            <em>All Locations</em>
-          </MenuItem>
-          {locations.map((location) => (
-            <MenuItem key={location.id} value={location.id}>
-              {location.name}
+        <FormControl fullWidth>
+          <Select
+            labelId="location-select-label"
+            value={selectedLocation}
+            onChange={(e) => setSelectedLocation(e.target.value)} // Update selected location
+            displayEmpty
+          >
+            <MenuItem value="">
+              <em>All Locations</em>
             </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+            {locations.map((location) => (
+              <MenuItem key={location.id} value={location.id}>
+                {location.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-      <FormControl fullWidth style={{ marginBottom: "20px" }}>
-        <InputLabel id="rating-select-label">Minimum Rating</InputLabel>
-        <Select
-          labelId="rating-select-label"
-          value={ratingFilter}
-          onChange={(e) => setRatingFilter(e.target.value)} // Update rating filter
-          displayEmpty
-        >
-          <MenuItem value={0}>All Ratings</MenuItem>
-          <MenuItem value={1}>1 Star</MenuItem>
-          <MenuItem value={2}>2 Stars</MenuItem>
-          <MenuItem value={3}>3 Stars</MenuItem>
-          <MenuItem value={4}>4 Stars</MenuItem>
-          <MenuItem value={5}>5 Stars</MenuItem>
-        </Select>
-      </FormControl>
+        <FormControl fullWidth>
+          <Select
+            labelId="rating-select-label"
+            value={ratingFilter}
+            onChange={(e) => setRatingFilter(e.target.value)} // Update rating filter
+            displayEmpty
+          >
+            <MenuItem value={0}>All Ratings</MenuItem>
+            <MenuItem value={1}>1 Star</MenuItem>
+            <MenuItem value={2}>2 Stars</MenuItem>
+            <MenuItem value={3}>3 Stars</MenuItem>
+            <MenuItem value={4}>4 Stars</MenuItem>
+            <MenuItem value={5}>5 Stars</MenuItem>
+          </Select>
+        </FormControl>
+      </div>
 
       {filteredHotels.map((hotel) => (
-        <Link className="hotel-list-item" to="/hotel_detail" key={hotel.id}>
+        <Link
+          className="hotel-list-item"
+          to={`/hotel_detail/${hotel.id}`}
+          key={hotel.id}
+        >
           <div className="list-hotel-item">
             <div className="flex-hotel">
               <img

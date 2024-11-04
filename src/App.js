@@ -4,12 +4,12 @@ import { I18nProvider, LOCALES } from "./i18n";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
-import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Layout from "./components/Layout";
 import Hotel from "./pages/Hotel";
 import Profile from "./pages/Profile";
+import BookingHistory from "./pages/BookingHistory";
 import "./styles.css";
 import RegisterHotel from "./pages/Register_Hotel/Register_Hotel";
 import ManageHotel from "./pages/Manage_Hotel/Manage_Hotel";
@@ -38,7 +38,7 @@ function App() {
             }
           />
           <Route
-            path="/hotel_detail"
+            path="/hotel_detail/:hotel_id"
             element={
               <Layout changeLanguage={changeLanguage}>
                 <HotelDetail />
@@ -70,14 +70,6 @@ function App() {
             }
           />
           <Route
-            path="/contact"
-            element={
-              <Layout changeLanguage={changeLanguage}>
-                <Contact />
-              </Layout>
-            }
-          />
-          <Route
             path="/register_hotel"
             element={
               <Layout changeLanguage={changeLanguage}>
@@ -90,6 +82,14 @@ function App() {
             element={
               <Layout changeLanguage={changeLanguage}>
                 <ManageHotel />
+              </Layout>
+            }
+          />
+          <Route
+            path="/booking-history"
+            element={
+              <Layout changeLanguage={changeLanguage}>
+                <BookingHistory />
               </Layout>
             }
           />
