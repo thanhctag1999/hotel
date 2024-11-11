@@ -12,6 +12,8 @@ export default {
   login: "Login",
   register: "Register",
   register_hotel: "Register your hotel",
+  manage_hotel: "Manage your hotel",
+  hotel_image: "Hotel Image",
   logout: "Logout",
   selectedLocation: "Select a Location",
   register_hotel_title: "List your hotel on Booking.com",

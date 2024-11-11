@@ -108,18 +108,33 @@ const Header = ({ changeLanguage }) => {
               <FormattedMessage id="about" defaultMessage="about" />
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              className="header-link"
-              to="/register_hotel"
-              activeClassName="active-link"
-            >
-              <FormattedMessage
-                id="register_hotel"
-                defaultMessage="register_hotel"
-              />
-            </NavLink>
-          </li>
+          {localStorage.getItem("role") !== "2" ? (
+            <li>
+              <NavLink
+                className="header-link"
+                to="/register_hotel"
+                activeClassName="active-link"
+              >
+                <FormattedMessage
+                  id="register_hotel"
+                  defaultMessage="register_hotel"
+                />
+              </NavLink>
+            </li>
+          ) : (
+            <li>
+              <NavLink
+                className="header-link"
+                to="/manage_hotel"
+                activeClassName="active-link"
+              >
+                <FormattedMessage
+                  id="manage_hotel"
+                  defaultMessage="manage_hotel"
+                />
+              </NavLink>
+            </li>
+          )}
         </ul>
         <React.Fragment>
           <Box

@@ -6,6 +6,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  CircularProgress,
   Button,
 } from "@mui/material";
 import axios from "axios";
@@ -13,6 +14,8 @@ import axios from "axios";
 const BookingHistory = () => {
   const today = new Date();
   const [bookingHistory, setBookingHistory] = useState([]);
+  const [loading, setLoading] = useState(true);
+
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -37,6 +40,7 @@ const BookingHistory = () => {
   useEffect(() => {
     const fetchDataBooking = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(
           `http://localhost:3000/api/v1/booking/getBookingByUserID/${localStorage.getItem(
             "userId"
@@ -44,11 +48,14 @@ const BookingHistory = () => {
         );
         if (response && response.status === 200) {
           setBookingHistory(response.data.data);
+          setLoading(false);
         } else {
           console.error("There was an error fetching the hotels!");
+          setLoading(false);
         }
       } catch (error) {
         console.error("There was an error fetching the hotels!");
+          setLoading(false);
       }
     };
 
@@ -61,7 +68,22 @@ const BookingHistory = () => {
         Booking History
       </Typography>
       <Paper elevation={3} sx={{ padding: 2 }}>
-        <List>
+        {loading ? (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center", // Center horizontally
+              margin: "0 auto",
+              padding: 2,
+              marginTop: "20%",
+              width: "fit-content", // Ensures box size fits content
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : (<List>
           {bookingHistory.map((booking) => (
             <ListItem key={booking.id} sx={{ marginBottom: 2 }}>
               <img
@@ -74,9 +96,8 @@ const BookingHistory = () => {
                 primary={`${booking.hotel_name} - ${booking.room_id}`}
                 secondary={`Check-in: ${formatDate(
                   booking.check_in_date
-                )}, Check-out: ${formatDate(booking.check_out_date)}, Guests: ${
-                  booking.people
-                }, Total Price: ${formatPrice(booking.total_price)} VND`}
+                )}, Check-out: ${formatDate(booking.check_out_date)}, Guests: ${booking.people
+                  }, Total Price: ${formatPrice(booking.total_price)} VND`}
                 sx={{ marginLeft: 2 }} // Add margin to ListItemText
               />
               {new Date(booking.checkInDate) > today && (
@@ -90,7 +111,7 @@ const BookingHistory = () => {
               )}
             </ListItem>
           ))}
-        </List>
+        </List>)}
       </Paper>
     </Box>
   );

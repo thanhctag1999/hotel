@@ -35,6 +35,7 @@ const Login = () => {
         localStorage.setItem("phoneNumber", data.phoneNumber);
         localStorage.setItem("address", data.address);
         localStorage.setItem("fullName", data.fullName);
+        localStorage.setItem("role", data.role);
 
         // Navigate to the user profile page
         toast.success("Login successful");

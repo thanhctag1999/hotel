@@ -269,6 +269,7 @@ h4 {
   border-radius: 25px;
   cursor: pointer;
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 .page-container button:hover{
   background-color: #ff8521;
@@ -336,4 +337,13 @@ h4 {
 .seachInput input{
   border: none !important;
   height: 16px !important;
+}
+.tab-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.tabs-item{
+  background-color: transparent !important;
+  color: #000 !important;
 }

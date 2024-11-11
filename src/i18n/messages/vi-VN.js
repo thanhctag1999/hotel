@@ -12,9 +12,11 @@ export default {
   login: "Đăng nhập",
   register: "Đăng ký",
   register_hotel: "Đăng ký khách sạn của bạn",
+  manage_hotel: "Quản lý khách sạn của bạn",
   logout: "Đăng xuất",
   selectedLocation: "Chọn địa điểm",
   register_hotel_title: "Đăng khách sạn của bạn trên Booking.com",
+  hotel_image: "Hình ảnh khách sạn",
   register_hotel_desc:
     "Dù host là nghề tay trái hay công việc toàn thời gian, hãy đăng nhà của bạn ngay hôm nay và nhanh chóng có thêm nguồn thu nhập.",
   namage_hotel_title:

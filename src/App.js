@@ -13,6 +13,7 @@ import BookingHistory from "./pages/BookingHistory";
 import "./styles.css";
 import RegisterHotel from "./pages/Register_Hotel/Register_Hotel";
 import ManageHotel from "./pages/Manage_Hotel/Manage_Hotel";
+import CreateRoom from "./pages/Manage_Hotel/components/CreateRoom";
 import HotelDetail from "./pages/Hotel_detail";
 
 function App() {
@@ -82,6 +83,14 @@ function App() {
             element={
               <Layout changeLanguage={changeLanguage}>
                 <ManageHotel />
+              </Layout>
+            }
+          />
+          <Route
+            path="/create-room"
+            element={
+              <Layout changeLanguage={changeLanguage}>
+                <CreateRoom />
               </Layout>
             }
           />
