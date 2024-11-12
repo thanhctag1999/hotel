@@ -53,7 +53,7 @@ const CreateHotel = () => {
         setLoading(true);
         const userId = localStorage.getItem("userId");
         const response = await axios.get(
-          `http://localhost:3000/api/v1/hotel/getHotelByUserId/${userId}`
+          `https://api-tltn.onrender.com/api/v1/hotel/getHotelByUserId/${userId}`
         );
         if (response.status === 200) {
           setHotel(response.data.data);
@@ -63,7 +63,7 @@ const CreateHotel = () => {
           setHotelName(response.data.data.hotelName);
           setSelectedServices(response.data.data.services);
           setImage(
-            `http://localhost:3000/public/images/hotel/${response.data.data.imageHotel}`
+            `https://api-tltn.onrender.com/public/images/hotel/${response.data.data.imageHotel}`
           );
           setDescription(response.data.data.description || ""); // Set description from API if available
         }
@@ -132,8 +132,8 @@ const CreateHotel = () => {
 
     try {
       const url = hotelId
-        ? `http://localhost:3000/api/v1/hotel/update/${hotelId}`
-        : `http://localhost:3000/api/v1/hotel/register`;
+        ? `https://api-tltn.onrender.com/api/v1/hotel/update/${hotelId}`
+        : `https://api-tltn.onrender.com/api/v1/hotel/register`;
 
       const method = hotelId ? "PUT" : "POST";
 

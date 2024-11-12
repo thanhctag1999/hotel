@@ -14,6 +14,10 @@ import {
   TextField,
   Button,
   IconButton,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -22,8 +26,19 @@ const ManageRooms = () => {
   const [hotel, setHotel] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false); // Modal open/close state
-  const [selectedRoom, setSelectedRoom] = useState(null); // Selected room data for editing
+  const [open, setOpen] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState(null);
+
+  const formatPrice = (price) => {
+    // Convert price to a number  andformat it
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    })
+      .format(price)
+      .replace("₫", "")
+      .trim();
+  };
 
   useEffect(() => {
     const fetchHotel = async () => {
@@ -31,11 +46,11 @@ const ManageRooms = () => {
         setLoading(true);
         const userId = localStorage.getItem("userId");
         const response = await axios.get(
-          `http://localhost:3000/api/v1/hotel/getHotelByUserId/${userId}`
+          `https://api-tltn.onrender.com/api/v1/hotel/getHotelByUserId/${userId}`
         );
         if (response.status === 200) {
           setHotel(response.data.data);
-          fetchRooms(response.data.data.id); // Fetch rooms after getting hotel ID
+          fetchRooms(response.data.data.id);
         }
       } catch (error) {
         console.error("Error fetching hotel:", error);
@@ -47,7 +62,7 @@ const ManageRooms = () => {
     const fetchRooms = async (hotelId) => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/room/getRoomsByHotelId/${hotelId}`
+          `https://api-tltn.onrender.com/api/v1/room/getRoomsByHotelId/${hotelId}`
         );
         if (response.status === 200) {
           setRooms(response.data.data);
@@ -93,7 +108,7 @@ const ManageRooms = () => {
       };
 
       const response = await axios.post(
-        `http://localhost:3000/api/v1/room/updateRoom`,
+        `https://api-tltn.onrender.com/api/v1/room/updateRoom`,
         requestBody
       );
 
@@ -114,13 +129,11 @@ const ManageRooms = () => {
   const handleDeleteRoom = async (id) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/v1/room/deleteRoom/${id}`
+        `https://api-tltn.onrender.com/api/v1/room/deleteRoom/${id}`
       );
       if (response.status === 200) {
-          toast.success("Delete room successful");
-          setRooms((prevRooms) =>
-            prevRooms.filter((room) => room.id !== id)
-          );
+        toast.success("Delete room successful");
+        setRooms((prevRooms) => prevRooms.filter((room) => room.id !== id));
       }
     } catch (error) {
       toast.error("Delete room Fail");
@@ -150,11 +163,17 @@ const ManageRooms = () => {
       <br />
       <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
         {rooms.map((room) => (
-          <Card key={room.id} style={{ width: "300px", position: "relative" }}>
+          <Card
+            key={room.id}
+            style={{ width: "300px", position: "relative", cursor: "pointer" }}
+            onClick={() => handleOpenModal(room)}
+          >
             <CardContent>
-              <Typography variant="h6">Room {room.room_number}</Typography>
+              <Typography variant="h5">
+                <strong>Room {room.room_number}</strong>
+              </Typography>
               <Typography variant="body2">
-                <strong>Price:</strong> {room.price} VND
+                <strong>Price:</strong> {formatPrice(room.price)} VND
               </Typography>
               <Typography variant="body2">
                 <strong>Description:</strong> {room.description}
@@ -166,7 +185,11 @@ const ManageRooms = () => {
                   : "Not Available"}
               </Typography>
               <IconButton
-                onClick={() => handleDeleteRoom(room.id)}
+                className="icon-delete"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteRoom(room.id);
+                }}
                 style={{
                   position: "absolute",
                   top: 8,
@@ -194,16 +217,26 @@ const ManageRooms = () => {
                 onChange={handleInputChange}
                 variant="outlined"
                 style={{ marginBottom: "16px" }}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "15px", // Adjust the radius as needed
+                  },
+                }}
               />
               <TextField
                 fullWidth
                 label="Price"
                 name="price"
                 type="number"
-                value={selectedRoom.price}
+                value={formatPrice(selectedRoom.price)}
                 onChange={handleInputChange}
                 variant="outlined"
                 style={{ marginBottom: "16px" }}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "15px", // Adjust the radius as needed
+                  },
+                }}
               />
               <TextField
                 fullWidth
@@ -215,24 +248,42 @@ const ManageRooms = () => {
                 onChange={handleInputChange}
                 variant="outlined"
                 style={{ marginBottom: "16px" }}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "15px", // Adjust the radius as needed
+                  },
+                }}
               />
-              <TextField
-                fullWidth
-                label="Availability Status"
-                name="availability_status"
-                value={selectedRoom.availability_status}
-                onChange={handleInputChange}
-                variant="outlined"
-                style={{ marginBottom: "16px" }}
-              />
+              <FormControl fullWidth style={{ marginBottom: "16px" }}>
+                <InputLabel>Availability Status</InputLabel>
+                <Select
+                  label="Availability Status"
+                  name="availability_status"
+                  value={selectedRoom.availability_status}
+                  onChange={handleInputChange}
+                  variant="outlined"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "15px", // Adjust the radius as needed
+                    },
+                  }}
+                >
+                  <MenuItem value="OK">OK</MenuItem>
+                  <MenuItem value="Off">OFF</MenuItem>
+                </Select>
+              </FormControl>
             </div>
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseModal} color="primary">
+          <Button onClick={handleCloseModal} color="second" variant="contained">
             Cancel
           </Button>
-          <Button onClick={handleUpdateRoom} color="primary">
+          <Button
+            onClick={handleUpdateRoom}
+            color="primary"
+            variant="contained"
+          >
             Update Room
           </Button>
         </DialogActions>

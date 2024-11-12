@@ -39,7 +39,7 @@ const CreateRoom = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/v1/room/createRoom",
+        "https://api-tltn.onrender.com/api/v1/room/createRoom",
         roomPayload
       );
       if (response.status === 201) {

@@ -9,6 +9,7 @@ import Register from "./pages/Register";
 import Layout from "./components/Layout";
 import Hotel from "./pages/Hotel";
 import Profile from "./pages/Profile";
+import ResetPassword from "./pages/Reset_password";
 import BookingHistory from "./pages/BookingHistory";
 import "./styles.css";
 import RegisterHotel from "./pages/Register_Hotel/Register_Hotel";
@@ -59,6 +60,14 @@ function App() {
             element={
               <Layout changeLanguage={changeLanguage}>
                 <Profile />
+              </Layout>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <Layout changeLanguage={changeLanguage}>
+                <ResetPassword />
               </Layout>
             }
           />

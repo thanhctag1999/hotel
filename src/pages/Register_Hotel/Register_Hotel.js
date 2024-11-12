@@ -21,7 +21,7 @@ const RegisterHotel = () => {
       try {
         setLoading(true); // Set loading to true before making the request
         const response = await axios.get(
-          `http://localhost:3000/api/v1/user/registerHost/${userID}`
+          `https://api-tltn.onrender.com/api/v1/user/registerHost/${userID}`
         );
 
         if (response && response.status === 200) {

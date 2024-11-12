@@ -42,7 +42,7 @@ const BookingHistory = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `http://localhost:3000/api/v1/booking/getBookingByUserID/${localStorage.getItem(
+          `https://api-tltn.onrender.com/api/v1/booking/getBookingByUserID/${localStorage.getItem(
             "userId"
           )}`
         );
