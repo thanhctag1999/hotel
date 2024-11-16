@@ -158,10 +158,16 @@ const Login = () => {
         )}
 
         <div style={{ marginTop: 15 }} className="google-login">
-          <GoogleLogin
-            onSuccess={handleGoogleLoginSuccess}
-            onError={() => toast.error("Google login failed")}
-          />
+          {loading ? (
+            <button disabled className="loading-button">
+              Logging in with Google...
+            </button>
+          ) : (
+            <GoogleLogin
+              onSuccess={handleGoogleLoginSuccess}
+              onError={() => toast.error("Google login failed")}
+            />
+          )}
         </div>
 
         <div className="login-link">

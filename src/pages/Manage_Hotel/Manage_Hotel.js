@@ -4,6 +4,7 @@ import { Tabs, Tab, Box } from "@mui/material";
 import "./manage_hotel.css";
 import CreateHotel from "./components/Create_hotel";
 import ManageRooms from "./components/ManageRooms";
+import Discount from "./components/Discount";
 
 const ManageHotel = () => {
   const [activeTab, setActiveTab] = useState("hotel");
@@ -28,10 +29,11 @@ const ManageHotel = () => {
       >
         <Tab className="tabs-item" label="Manage Hotel" value="hotel" />
         <Tab className="tabs-item" label="Manage Rooms" value="rooms" />
+        <Tab className="tabs-item" label="Manage Discount" value="discount" />
       </Tabs>
 
       <Box sx={{ padding: 2 }}>
-        {activeTab === "hotel" ? <CreateHotel /> : <ManageRooms />}
+        {activeTab === "hotel" ? <CreateHotel /> : activeTab === "rooms" ? <ManageRooms /> : <Discount />}
       </Box>
     </div>
   );

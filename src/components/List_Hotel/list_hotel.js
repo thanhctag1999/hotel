@@ -151,9 +151,14 @@ export default function List_Hotel() {
             <div className="flex-hotel">
               <img
                 className="list-hotel-img"
-                src={hotel.image_hotel || "https://via.placeholder.com/150"} // Fallback image
+                src={
+                  hotel.image_hotel
+                    ? `https://api-tltn.onrender.com/${hotel.image_path}`
+                    : "https://via.placeholder.com/150"
+                } // Fallback image
                 alt={hotel.hotel_name}
               />
+
               <div className="list-hotel-contain">
                 <h4>{hotel.hotel_name}</h4>
                 <div className="location">

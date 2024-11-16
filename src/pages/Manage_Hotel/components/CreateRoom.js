@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { TextField, Button, Container, Grid, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const CreateRoom = () => {
+  const navigate = useNavigate();
   const [roomData, setRoomData] = useState({
     room_type_id: "1",
     room_number: "",
@@ -44,11 +46,13 @@ const CreateRoom = () => {
       );
       if (response.status === 201) {
         toast.success("Room created successfully!");
+        // Navigate back after a short delay to show the success message
+        setTimeout(() => navigate(-1), 1500); // Navigate to the previous page
       } else {
-          toast.error("Failed to create room. Please try again");
+        toast.error("Failed to create room. Please try again");
       }
     } catch (error) {
-        toast.error("Failed to create room. Please try again");
+      toast.error("Failed to create room. Please try again");
     }
   };
 

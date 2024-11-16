@@ -16,19 +16,25 @@ import {
   Stack,
   Grid,
 } from "@mui/material";
-import Alert from "@mui/material/Alert";
-import CheckIcon from "@mui/icons-material/Check";
 import { useParams } from "react-router-dom";
 import axios from "axios"; // Axios for API calls
 import "../css/hotel_detail.css";
+import { DateTime } from "luxon";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const HotelDetail = () => {
   const { hotel_id } = useParams();
   const [numPeople, setNumPeople] = useState(1);
-  const [checkInDate, setCheckInDate] = useState("");
-  const [checkOutDate, setCheckOutDate] = useState("");
+  const today = new Date();
+  const defaultDate = today.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+  const [checkInDate, setCheckInDate] = useState(defaultDate);
+  const nextDay = new Date(today);
+  nextDay.setDate(today.getDate() + 1);
+  const defaultCheckOutDate = nextDay.toISOString().split("T")[0];
+  const [checkOutDate, setCheckOutDate] = useState(
+    defaultCheckOutDate
+  );
   const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState("");
   const [comments, setComments] = useState([]);
@@ -37,6 +43,12 @@ const HotelDetail = () => {
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
+
+  const getNextDay = (date) => {
+    const nextDay = new Date(date);
+    nextDay.setDate(nextDay.getDate() + 1); // Add one day
+    return nextDay.toISOString().split("T")[0]; // Return the date in 'YYYY-MM-DD' format
+  };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -128,56 +140,101 @@ const HotelDetail = () => {
     fetchComments();
   }, [hotel_id]);
 
-  const handleRoomChange = (event) => {
-    setSelectedRoom(event.target.value);
+  useEffect(() => {
     calculatePrice();
-  };
+  }, [checkInDate, checkOutDate, selectedRoom]);
 
   const handleCommentChange = (e) => {
     setNewComment(e.target.value);
   };
 
-  const handleCommentSubmit = () => {
+  const handleCommentSubmit = async () => {
+    const userId = localStorage.getItem("userId");
+    const token = localStorage.getItem("token");
+    const fullName = localStorage.getItem("fullName");
+    const apiUrl = "https://api-tltn.onrender.com/api/v1/comment/create";
+
     if (newComment.trim() !== "") {
-      setComments([...comments, { user: "You", text: newComment }]);
-      setNewComment("");
+      try {
+        const response = await axios.post(
+          apiUrl,
+          {
+            user_id: userId,
+            hotel_id: hotel_id,
+            comment_text: newComment,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.status === 201) {
+          toast.success("Comment added successfully!");
+          setComments([
+            ...comments,
+            {
+              user_id: userId,
+              user_name: fullName,
+              comment_text: newComment,
+              createdAt: DateTime.now().toISO(), // ISO format for the timestamp
+            },
+          ]);
+          setNewComment("");
+        }
+        else{
+          toast.error("Authentication error. Please log in again.");
+        }
+      } catch (error) {
+        toast.error("Failed to add comment. Please try again.");
+      }
+    } else {
+      toast.error("Comment cannot be empty.");
     }
+  };
+
+  const handleRoomChange = (event) => {
+    setSelectedRoom(event.target.value);
   };
 
   const handleQuantityChange = (event) => {
     setNumPeople(event.target.value);
-    calculatePrice();
   };
 
   const handleCheckInDateChange = (event) => {
     setCheckInDate(event.target.value);
-    calculatePrice();
   };
 
   const handleCheckOutDateChange = (event) => {
     setCheckOutDate(event.target.value);
-    calculatePrice();
   };
 
   const calculatePrice = () => {
-    // Find the price of the selected room
     const roomPrice = rooms.find((room) => room.id === selectedRoom)?.price;
-
-    // Return 0 if the selected room is not found
-    if (!roomPrice) return 0;
+    if (!roomPrice) return setTotalPrice(0); // Ensure totalPrice is reset if no room is selected
 
     const start = new Date(checkInDate);
     const end = new Date(checkOutDate);
 
-    // Calculate the difference in time
+    // Check if the dates are valid
+    if (isNaN(start) || isNaN(end)) {
+      setTotalPrice(0);
+      return;
+    }
+
+    // Show an error if the check-in date is later than the check-out date
+    if (start >= end) {
+      toast.error("Check-out date must be after the check-in date");
+      setTotalPrice(0);
+      return;
+    }
+
     const timeDiff = end - start;
-
-    // Convert time difference from milliseconds to days
     const days = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-    // Calculate and return the total price
     setTotalPrice(days * roomPrice);
   };
+
 
   const handleBooking = async () => {
     if (localStorage.getItem("userId") !== null) {
@@ -208,7 +265,10 @@ const HotelDetail = () => {
           toast.error("Booking failed. Please try again.");
         }
       } catch (error) {
-        if (error.response && error.response.status === 401) {
+        if (
+          (error.response && error.response.status === 401) ||
+          error.response.status === 403
+      ) {
           toast.error("Authentication error. Please log in again.");
         } else {
           toast.error("Booking failed. Please try again later.");
@@ -270,7 +330,11 @@ const HotelDetail = () => {
                     }}
                   >
                     <img
-                      src={hotel.imageHotel}
+                      src={
+                        hotel.imageHotel
+                          ? `https://api-tltn.onrender.com/${hotel.imagePath}`
+                          : "https://via.placeholder.com/150"
+                      }
                       alt={hotel.hotelName}
                       style={{ width: "100%", borderRadius: 8 }}
                     />
@@ -302,8 +366,14 @@ const HotelDetail = () => {
                     <InputLabel>Room Number</InputLabel>
                     <Select
                       value={selectedRoom}
-                      onChange={handleRoomChange}
+                      onChange={(e) => handleRoomChange(e)}
                       label="Room Number"
+                      sx={{
+                        borderRadius: "15px",
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderRadius: "15px",
+                        },
+                      }}
                     >
                       {rooms.map((room) => (
                         <MenuItem key={room.id} value={room.id}>
@@ -317,8 +387,14 @@ const HotelDetail = () => {
                     <InputLabel>Quantity of People</InputLabel>
                     <Select
                       value={numPeople}
-                      onChange={handleQuantityChange}
+                      onChange={(e) => handleQuantityChange(e)}
                       label="Quantity of People"
+                      sx={{
+                        borderRadius: "15px",
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderRadius: "15px",
+                        },
+                      }}
                     >
                       {[1, 2, 3, 4].map((quantity) => (
                         <MenuItem key={quantity} value={quantity}>
@@ -332,11 +408,17 @@ const HotelDetail = () => {
                     label="Check-in Date"
                     type="date"
                     value={checkInDate}
-                    onChange={handleCheckInDateChange}
+                    onChange={(e) => handleCheckInDateChange(e)}
                     fullWidth
-                    sx={{ mb: 2 }}
                     InputLabelProps={{
                       shrink: true,
+                    }}
+                    sx={{
+                      my: 2,
+                      borderRadius: "15px",
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "15px", // For the TextField input area
+                      },
                     }}
                   />
 
@@ -344,10 +426,20 @@ const HotelDetail = () => {
                     label="Check-out Date"
                     type="date"
                     value={checkOutDate}
-                    onChange={handleCheckOutDateChange}
+                    onChange={(e) => handleCheckOutDateChange(e)}
                     fullWidth
                     InputLabelProps={{
                       shrink: true,
+                    }}
+                    sx={{
+                      my: 2,
+                      borderRadius: "15px",
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "15px", // For the TextField input area
+                      },
+                    }}
+                    inputProps={{
+                      min: getNextDay(checkInDate), // Disable check-out dates before the check-in date
                     }}
                   />
                   <br />
@@ -360,10 +452,16 @@ const HotelDetail = () => {
                     variant="contained"
                     color="primary"
                     fullWidth
-                    sx={{ mt: 2 }}
+                    sx={{
+                      backgroundColor: "#ec6a00",
+                      "&:hover": {
+                        backgroundColor: "#d65c00", // Darker shade on hover
+                      },
+                      borderRadius: "15px",
+                    }}
                     onClick={() => handleBooking()}
                   >
-                    {loading ? "Logging in..." : "Booking now"}
+                    {loading ? "Loading in..." : "Booking now"}
                   </Button>
                 </>
               </Paper>
@@ -375,7 +473,11 @@ const HotelDetail = () => {
             <>
               <List>
                 {comments.map((comment, index) => (
-                  <Paper style={{ padding: "40px 20px" }} key={index}>
+                  <Paper
+                    style={{ padding: "10px 10px" }}
+                    elevation={0}
+                    key={index}
+                  >
                     <Grid container wrap="nowrap" spacing={2}>
                       <Grid justifyContent="left" item xs zeroMinWidth>
                         <Stack direction="row" spacing={2}>
@@ -402,12 +504,24 @@ const HotelDetail = () => {
                 fullWidth
                 multiline
                 rows={3}
-                sx={{ my: 2 }}
+                sx={{
+                  my: 2,
+                  borderRadius: "15px",
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "15px", // For the TextField input area
+                  },
+                }}
               />
               <Button
                 variant="contained"
-                color="primary"
                 onClick={handleCommentSubmit}
+                sx={{
+                  backgroundColor: "#ec6a00",
+                  "&:hover": {
+                    backgroundColor: "#d65c00", // Darker shade on hover
+                  },
+                  borderRadius: "15px",
+                }}
               >
                 Submit Comment
               </Button>
