@@ -5,6 +5,7 @@ import "./manage_hotel.css";
 import CreateHotel from "./components/Create_hotel";
 import ManageRooms from "./components/ManageRooms";
 import Discount from "./components/Discount";
+import Booking from "./components/Booking";
 
 const ManageHotel = () => {
   const [activeTab, setActiveTab] = useState("hotel");
@@ -16,7 +17,7 @@ const ManageHotel = () => {
       <h2>
         <FormattedMessage
           id="manage_hotel_title"
-          defaultMessage="Manage Hotel"
+          defaultMessage="manage_hotel_title"
         />
       </h2>
 
@@ -27,13 +28,55 @@ const ManageHotel = () => {
         textColor="primary"
         indicatorColor="primary"
       >
-        <Tab className="tabs-item" label="Manage Hotel" value="hotel" />
-        <Tab className="tabs-item" label="Manage Rooms" value="rooms" />
-        <Tab className="tabs-item" label="Manage Discount" value="discount" />
+        <Tab
+          className="tabs-item"
+          label={
+            <FormattedMessage
+              id="manage_hotel_title"
+              defaultMessage="manage_hotel_title"
+            />
+          }
+          value="hotel"
+        />
+        <Tab
+          className="tabs-item"
+          label={
+            <FormattedMessage id="manage_rooms" defaultMessage="manage_rooms" />
+          }
+          value="rooms"
+        />
+        <Tab
+          className="tabs-item"
+          label={
+            <FormattedMessage
+              id="manage_discounts"
+              defaultMessage="manage_discounts"
+            />
+          }
+          value="discount"
+        />
+        <Tab
+          className="tabs-item"
+          label={
+            <FormattedMessage
+              id="manage_bookings"
+              defaultMessage="manage_bookings"
+            />
+          }
+          value="booking"
+        />
       </Tabs>
 
       <Box sx={{ padding: 2 }}>
-        {activeTab === "hotel" ? <CreateHotel /> : activeTab === "rooms" ? <ManageRooms /> : <Discount />}
+        {activeTab === "hotel" ? (
+          <CreateHotel />
+        ) : activeTab === "rooms" ? (
+          <ManageRooms />
+        ) : activeTab === "booking" ? (
+          <Booking />
+        ) : (
+          <Discount />
+        )}
       </Box>
     </div>
   );

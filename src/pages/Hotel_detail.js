@@ -21,6 +21,7 @@ import axios from "axios"; // Axios for API calls
 import "../css/hotel_detail.css";
 import { DateTime } from "luxon";
 import { ToastContainer, toast } from "react-toastify";
+import { FormattedMessage } from "react-intl";
 import "react-toastify/dist/ReactToastify.css";
 
 const HotelDetail = () => {
@@ -122,7 +123,7 @@ const HotelDetail = () => {
     const fetchRooms = async () => {
       try {
         const response = await axios.get(
-          `https://api-tltn.onrender.com/api/v1/room/getRoomsByHotelId/${hotel_id}`
+          `http://localhost:3000/api/v1/room/getRoomsByHotelId/${hotel_id}`
         );
         if (response.status === 200 && response.data && response.data.data) {
           setRooms(response.data.data);
@@ -152,7 +153,7 @@ const HotelDetail = () => {
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
     const fullName = localStorage.getItem("fullName");
-    const apiUrl = "https://api-tltn.onrender.com/api/v1/comment/create";
+    const apiUrl = "http://localhost:3000/api/v1/comment/create";
 
     if (newComment.trim() !== "") {
       try {
@@ -184,10 +185,10 @@ const HotelDetail = () => {
           setNewComment("");
         }
         else{
-          toast.error("Authentication error. Please log in again.");
+          toast.error("Failed to add comment. Please booking hotel first");
         }
       } catch (error) {
-        toast.error("Failed to add comment. Please try again.");
+        toast.error("Failed to add comment. Please booking hotel first");
       }
     } else {
       toast.error("Comment cannot be empty.");
@@ -211,7 +212,7 @@ const HotelDetail = () => {
   };
 
   const calculatePrice = () => {
-    const roomPrice = rooms.find((room) => room.id === selectedRoom)?.price;
+    const roomPrice = rooms.find((room) => room.id === selectedRoom)?.new_price;
     if (!roomPrice) return setTotalPrice(0); // Ensure totalPrice is reset if no room is selected
 
     const start = new Date(checkInDate);
@@ -317,7 +318,11 @@ const HotelDetail = () => {
                     {hotel.hotelName}
                   </Typography>
                   <Typography variant="subtitle1" gutterBottom>
-                    <strong>Address:</strong> {hotel.address}
+                    <strong>
+                      <FormattedMessage id="address" defaultMessage="address" />
+                      :
+                    </strong>{" "}
+                    {hotel.address}
                   </Typography>
 
                   {/* Hotel Image */}
@@ -345,7 +350,9 @@ const HotelDetail = () => {
                   </Typography>
 
                   {/* Services */}
-                  <Typography variant="h6">Services</Typography>
+                  <Typography variant="h6">
+                    <FormattedMessage id="services" defaultMessage="services" />
+                  </Typography>
                   <List>
                     {service.map((serviceItem, index) => (
                       <ListItem key={index}>
@@ -361,9 +368,16 @@ const HotelDetail = () => {
             <Grid item xs={4}>
               <Paper elevation={3} sx={{ padding: 2 }}>
                 <>
-                  <h5>Booking</h5>
+                  <h5>
+                    <FormattedMessage id="booking" defaultMessage="booking" />
+                  </h5>
                   <FormControl fullWidth sx={{ mb: 2 }}>
-                    <InputLabel>Room Number</InputLabel>
+                    <InputLabel>
+                      <FormattedMessage
+                        id="room_number"
+                        defaultMessage="room_number"
+                      />
+                    </InputLabel>
                     <Select
                       value={selectedRoom}
                       onChange={(e) => handleRoomChange(e)}
@@ -377,14 +391,39 @@ const HotelDetail = () => {
                     >
                       {rooms.map((room) => (
                         <MenuItem key={room.id} value={room.id}>
-                          {room.room_number} - {formatPrice(room.price)} VND
+                          {room.room_number} -{" "}
+                          {formatPrice(room.original_price) !==
+                          formatPrice(room.new_price) ? (
+                            <>
+                              <span
+                                style={{
+                                  marginLeft: "10px",
+                                  textDecoration: "line-through",
+                                }}
+                              >
+                                {formatPrice(room.original_price)} VND
+                              </span>{" "}
+                              <span
+                                style={{ marginLeft: "10px", color: "red" }}
+                              >
+                                {formatPrice(room.new_price)} VND
+                              </span>
+                            </>
+                          ) : (
+                            <span>{formatPrice(room.original_price)} VND</span>
+                          )}
                         </MenuItem>
                       ))}
                     </Select>
                   </FormControl>
 
                   <FormControl fullWidth sx={{ mb: 2 }}>
-                    <InputLabel>Quantity of People</InputLabel>
+                    <InputLabel>
+                      <FormattedMessage
+                        id="quantity_people"
+                        defaultMessage="quantity_people"
+                      />
+                    </InputLabel>
                     <Select
                       value={numPeople}
                       onChange={(e) => handleQuantityChange(e)}
@@ -398,14 +437,29 @@ const HotelDetail = () => {
                     >
                       {[1, 2, 3, 4].map((quantity) => (
                         <MenuItem key={quantity} value={quantity}>
-                          {quantity} {quantity > 1 ? "people" : "person"}
+                          {quantity}{" "}
+                          {quantity > 1 ? (
+                            <FormattedMessage
+                              id="people"
+                              defaultMessage="people"
+                            />
+                          ) : (
+                            <FormattedMessage
+                              id="person"
+                              defaultMessage="person"
+                            />
+                          )}
                         </MenuItem>
                       ))}
                     </Select>
                   </FormControl>
-
                   <TextField
-                    label="Check-in Date"
+                    label={
+                      <FormattedMessage
+                        id="check_in"
+                        defaultMessage="check_in"
+                      />
+                    }
                     type="date"
                     value={checkInDate}
                     onChange={(e) => handleCheckInDateChange(e)}
@@ -421,9 +475,13 @@ const HotelDetail = () => {
                       },
                     }}
                   />
-
                   <TextField
-                    label="Check-out Date"
+                    label={
+                      <FormattedMessage
+                        id="check_out"
+                        defaultMessage="check_out"
+                      />
+                    }
                     type="date"
                     value={checkOutDate}
                     onChange={(e) => handleCheckOutDateChange(e)}
@@ -443,9 +501,12 @@ const HotelDetail = () => {
                     }}
                   />
                   <br />
-
                   <Typography fullWidth sx={{ mt: 2 }} variant="h6">
-                    Tổng tiền: {formatPrice(totalPrice)} VND
+                    <FormattedMessage
+                      id="total_price"
+                      defaultMessage="total_price"
+                    />
+                    : {formatPrice(totalPrice)} VND
                   </Typography>
                   <br />
                   <Button
@@ -461,7 +522,11 @@ const HotelDetail = () => {
                     }}
                     onClick={() => handleBooking()}
                   >
-                    {loading ? "Loading in..." : "Booking now"}
+                    {loading ? (
+                      "Loading in..."
+                    ) : (
+                      <FormattedMessage id="booking_now" defaultMessage="booking_now" />
+                    )}
                   </Button>
                 </>
               </Paper>
@@ -469,7 +534,9 @@ const HotelDetail = () => {
           </Grid>
           {/* Comments Section */}
           <Paper elevation={3} sx={{ padding: 2, marginTop: 2 }}>
-            <Typography variant="h6">Comments</Typography>
+            <Typography variant="h6">
+              <FormattedMessage id="comments" defaultMessage="comments" />
+            </Typography>
             <>
               <List>
                 {comments.map((comment, index) => (
@@ -498,7 +565,12 @@ const HotelDetail = () => {
               </List>
 
               <TextField
-                label="Add a Comment"
+                label={
+                  <FormattedMessage
+                    id="comment_placeholder"
+                    defaultMessage="comment_placeholder"
+                  />
+                }
                 value={newComment}
                 onChange={handleCommentChange}
                 fullWidth
@@ -523,7 +595,10 @@ const HotelDetail = () => {
                   borderRadius: "15px",
                 }}
               >
-                Submit Comment
+                <FormattedMessage
+                  id="submit_comment"
+                  defaultMessage="submit_comment"
+                />
               </Button>
             </>
           </Paper>

@@ -20,6 +20,7 @@ import {
   FormControl,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { FormattedMessage } from "react-intl";
 
 const ManageRooms = () => {
   const navigate = useNavigate();
@@ -46,7 +47,12 @@ const ManageRooms = () => {
         setLoading(true);
         const userId = localStorage.getItem("userId");
         const response = await axios.get(
-          `https://api-tltn.onrender.com/api/v1/hotel/getHotelByUserId/${userId}`
+          `https://api-tltn.onrender.com/api/v1/hotel/getHotelByUserId/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
         );
         if (response.status === 200) {
           setHotel(response.data.data);
@@ -62,7 +68,7 @@ const ManageRooms = () => {
     const fetchRooms = async (hotelId) => {
       try {
         const response = await axios.get(
-          `https://api-tltn.onrender.com/api/v1/room/getRoomsByHotelId/${hotelId}`
+          `http://localhost:3000/api/v1/room/getRoomsByHotelId/${hotelId}`
         );
         if (response.status === 200) {
           setRooms(response.data.data);
@@ -158,10 +164,20 @@ const ManageRooms = () => {
   return (
     <div>
       <ToastContainer />
-      <h2>Manage Rooms</h2>
-      <button onClick={handleCreateRoomClick}>Create Room</button>
-      <br />
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
+      <h2>
+        <FormattedMessage id="manage_rooms" defaultMessage="manage_rooms" />
+      </h2>
+      <Button variant="contained" onClick={handleCreateRoomClick}>
+        <FormattedMessage id="create_room" defaultMessage="create_room" />
+      </Button>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "16px",
+          marginTop: "20px",
+        }}
+      >
         {rooms.map((room) => (
           <Card
             key={room.id}
@@ -173,8 +189,23 @@ const ManageRooms = () => {
                 <strong>Room {room.room_number}</strong>
               </Typography>
               <Typography variant="body2">
-                <strong>Price:</strong> {formatPrice(room.price)} VND
+                <strong>Price:</strong>{" "}
+                {formatPrice(room.original_price) !==
+                formatPrice(room.new_price) ? (
+                  <>
+                    <span style={{ textDecoration: "line-through" }}>
+                      {formatPrice(room.original_price)} VND
+                    </span>{" "}
+                    -{" "}
+                    <span style={{ color: "red" }}>
+                      {formatPrice(room.new_price)} VND
+                    </span>
+                  </>
+                ) : (
+                  <span>{formatPrice(room.original_price)} VND</span>
+                )}
               </Typography>
+
               <Typography variant="body2">
                 <strong>Description:</strong> {room.description}
               </Typography>
@@ -202,7 +233,11 @@ const ManageRooms = () => {
           </Card>
         ))}
       </div>
-      {rooms.length === 0 && <p>No rooms available for this hotel.</p>}
+      {rooms.length === 0 && (
+        <p>
+          <FormattedMessage id="no_room" defaultMessage="no_room" />
+        </p>
+      )}
 
       <Dialog open={open} onClose={handleCloseModal}>
         <DialogTitle>Edit Room</DialogTitle>
@@ -228,7 +263,7 @@ const ManageRooms = () => {
                 label="Price"
                 name="price"
                 type="number"
-                value={formatPrice(selectedRoom.price)}
+                value={formatPrice(selectedRoom.original_price)}
                 onChange={handleInputChange}
                 variant="outlined"
                 style={{ marginBottom: "16px" }}

@@ -3,6 +3,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { TextField, Button, Container, Grid, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { FormattedMessage } from "react-intl";
 
 const CreateRoom = () => {
   const navigate = useNavigate();
@@ -60,14 +61,19 @@ const CreateRoom = () => {
     <Container maxWidth="sm" sx={{ marginTop: 4 }}>
       <ToastContainer />
       <Typography variant="h5" gutterBottom>
-        Create Room
+        <FormattedMessage id="create_room" defaultMessage="create_room" />
       </Typography>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label="Room Number"
+              label={
+                <FormattedMessage
+                  id="room_number"
+                  defaultMessage="room_number"
+                />
+              }
               name="room_number"
               value={roomData.room_number}
               onChange={handleChange}
@@ -77,7 +83,7 @@ const CreateRoom = () => {
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label="Price"
+              label={<FormattedMessage id="price" defaultMessage="price" />}
               name="price"
               type="number"
               value={roomData.price}
@@ -88,7 +94,12 @@ const CreateRoom = () => {
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label="Description"
+              label={
+                <FormattedMessage
+                  id="description_room"
+                  defaultMessage="description_room"
+                />
+              }
               name="description"
               multiline
               rows={4}
@@ -99,7 +110,7 @@ const CreateRoom = () => {
           </Grid>
           <Grid item xs={12}>
             <Button fullWidth variant="contained" color="primary" type="submit">
-              Create Room
+              <FormattedMessage id="create_room" defaultMessage="create_room" />
             </Button>
           </Grid>
         </Grid>

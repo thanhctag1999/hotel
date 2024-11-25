@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { FormattedMessage } from "react-intl";
 
 const BookingHistory = () => {
   const today = new Date();
@@ -91,7 +92,10 @@ const BookingHistory = () => {
     <Box sx={{ padding: 2, maxWidth: "800px", margin: "0 auto" }}>
       <ToastContainer />
       <Typography variant="h3" gutterBottom>
-        Booking History
+        <FormattedMessage
+          id="booking_history"
+          defaultMessage="booking_history"
+        />
       </Typography>
       <Paper elevation={3} sx={{ padding: 2 }}>
         {loading ? (
@@ -123,13 +127,29 @@ const BookingHistory = () => {
                   primary={`${booking.hotel_name} - ${booking.room_id}`}
                   secondary={
                     <>
-                      {`Check-in: ${formatDate(booking.check_in_date)}`}
+                      <FormattedMessage
+                        id="check_in"
+                        defaultMessage="check_in"
+                      />
+                      : {formatDate(booking.check_in_date)}
                       <br />
-                      {`Check-out: ${formatDate(booking.check_out_date)}`}
+                      <FormattedMessage
+                        id="check_out"
+                        defaultMessage="check_out"
+                      />{" "}
+                      {formatDate(booking.check_out_date)}
                       <br />
-                      {`Guests: ${booking.people}`}
+                      <FormattedMessage
+                        id="quantity_people"
+                        defaultMessage="quantity_people"
+                      />{" "}
+                      {booking.people}
                       <br />
-                      {`Total Price: ${formatPrice(booking.total_price)} VND`}
+                      <FormattedMessage
+                        id="total_price"
+                        defaultMessage="total_price"
+                      />{" "}
+                      {formatPrice(booking.total_price)} VND
                     </>
                   }
                   sx={{ marginLeft: 2 }} // Add margin to ListItemText
@@ -152,7 +172,7 @@ const BookingHistory = () => {
                       }}
                       onClick={() => handleCancelBooking(booking.id)}
                     >
-                      Cancel
+                      <FormattedMessage id="cancel" defaultMessage="cancel" />
                     </Button>
                   )}
 
@@ -166,13 +186,24 @@ const BookingHistory = () => {
                     marginTop: 1,
                   }}
                 >
-                  {booking.booking_status === 0
-                    ? "Haven't checked in yet"
-                    : booking.booking_status === 1
-                    ? "Checked in"
-                    : booking.booking_status === 2
-                    ? "Checked out"
-                    : "Canceled"}
+                  {booking.booking_status === 0 ? (
+                    <FormattedMessage
+                      id="not_check_in"
+                      defaultMessage="not_check_in"
+                    />
+                  ) : booking.booking_status === 1 ? (
+                    <FormattedMessage
+                      id="checked_in"
+                      defaultMessage="checked_in"
+                    />
+                  ) : booking.booking_status === 2 ? (
+                    <FormattedMessage
+                      id="checked_out"
+                      defaultMessage="checked_out"
+                    />
+                  ) : (
+                    <FormattedMessage id="canceled" defaultMessage="canceled" />
+                  )}
                 </Typography>
               </ListItem>
             ))}

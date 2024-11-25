@@ -1,16 +1,17 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { FormattedMessage } from "react-intl";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 const Profile = () => {
   const [phone, setPhone] = useState(
-    localStorage.getItem("phoneNumber") !== "undefined"
+    localStorage.getItem("phoneNumber") !== "[object Object]"
       ? localStorage.getItem("phoneNumber")
       : ""
   );
   const [address, setAddress] = useState(
-    localStorage.getItem("address") !== "undefined"
+    localStorage.getItem("address") !== "[object Object]"
       ? localStorage.getItem("address")
       : ""
   );
@@ -65,12 +66,18 @@ const Profile = () => {
         </div>
       </div>
       <div className="page-contain">
-        <h1>Profile</h1>
+        <h1>
+          {" "}
+          <FormattedMessage id="profile" defaultMessage="profile" />
+        </h1>
         <form onSubmit={handleSubmit}>
           <div className="profile-form">
             <div className="flex">
               <div className="profile-input-form">
-                <label htmlFor="">UserName</label>
+                <label htmlFor="">
+                  {" "}
+                  <FormattedMessage id="username" defaultMessage="username" />
+                </label>
                 <input
                   className="profile-input readOnly"
                   type="text"
@@ -79,7 +86,10 @@ const Profile = () => {
                 />
               </div>
               <div className="profile-input-form">
-                <label htmlFor="">FullName</label>
+                <label htmlFor="">
+                  {" "}
+                  <FormattedMessage id="fullname" defaultMessage="fullname" />
+                </label>
                 <input
                   className="profile-input readOnly"
                   type="text"
@@ -89,7 +99,9 @@ const Profile = () => {
               </div>
             </div>
             <div className="profile-input-form-lg">
-              <label htmlFor="">Phone</label>
+              <label htmlFor="">
+                <FormattedMessage id="phone" defaultMessage="phone" />
+              </label>
               <input
                 className="profile-input"
                 type="phone"
@@ -99,7 +111,9 @@ const Profile = () => {
               />
             </div>
             <div className="profile-input-form-lg">
-              <label htmlFor="">Address</label>
+              <label htmlFor="">
+                <FormattedMessage id="address" defaultMessage="address" />
+              </label>
               <textarea
                 rows="10"
                 type="text"
@@ -110,7 +124,7 @@ const Profile = () => {
             </div>
           </div>
           <button className="btn" type="submit">
-            Update
+            <FormattedMessage id="update" defaultMessage="update" />
           </button>
         </form>
       </div>

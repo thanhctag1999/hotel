@@ -14,7 +14,7 @@ const HeroCover = (props) => {
           <FormattedMessage id={props.desc} defaultMessage={props.desc} />
         </h4>
       </div>
-      <SearchBox />
+      {/* <SearchBox /> */}
     </div>
   );
 };

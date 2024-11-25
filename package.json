@@ -19,12 +19,15 @@
     "axios": "^1.7.5",
     "compress.js": "^2.1.2",
     "date-fns": "^3.6.0",
+    "dayjs": "^1.11.13",
+    "dotenv": "^16.4.5",
     "font-awesome": "^4.7.0",
     "i18next": "^23.14.0",
     "i18next-browser-languagedetector": "^8.0.0",
     "i18next-http-backend": "^2.6.1",
     "luxon": "^3.5.0",
     "react": "^18.3.1",
+    "react-calendar": "^5.1.0",
     "react-dom": "^18.3.1",
     "react-i18next": "^15.0.1",
     "react-intl": "^6.6.8",
@@ -34,7 +37,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cross-env PORT=3002 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -58,6 +61,7 @@
     ]
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^6.6.0"
+    "@fortawesome/fontawesome-free": "^6.6.0",
+    "cross-env": "^7.0.3"
   }
 }

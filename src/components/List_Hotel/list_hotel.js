@@ -7,6 +7,7 @@ import {
 } from "@mui/material"; // Import necessary components
 import Rating from "@mui/material/Rating";
 import axios from "axios";
+import { FormattedMessage } from "react-intl";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import locationIcon from "../../assests/icons/location.png"; // Changed variable name to avoid conflict
@@ -95,7 +96,10 @@ export default function List_Hotel() {
 
   return (
     <div className="page-hotel">
-      <h2>Hot Booking</h2>
+      <h2>
+        <FormattedMessage id="hot_booking" defaultMessage="hot_booking" />
+      </h2>
+
       <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
         <TextField
           className="seachInput"

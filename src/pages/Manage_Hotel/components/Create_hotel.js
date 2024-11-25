@@ -5,6 +5,7 @@ import Rating from "@mui/material/Rating";
 import { ToastContainer, toast } from "react-toastify";
 import { CircularProgress } from "@mui/material";
 import axios from "axios";
+import Button from "@mui/material/Button";
 
 const CreateHotel = () => {
   const [locations, setLocations] = useState([]);
@@ -53,7 +54,12 @@ const CreateHotel = () => {
         setLoading(true);
         const userId = localStorage.getItem("userId");
         const response = await axios.get(
-          `https://api-tltn.onrender.com/api/v1/hotel/getHotelByUserId/${userId}`
+          `https://api-tltn.onrender.com/api/v1/hotel/getHotelByUserId/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
         );
         if (response.status === 200) {
           setHotel(response.data.data);
@@ -255,7 +261,12 @@ const CreateHotel = () => {
           />
         </h5>
         <textarea
-          placeholder="Enter hotel description"
+          placeholder={
+            <FormattedMessage
+              id="hotel_description"
+              defaultMessage="hotel_description"
+            />
+          }
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows="4"
@@ -285,9 +296,21 @@ const CreateHotel = () => {
           </div>
         ))}
         <hr />
-        <button type="submit" disabled={loading} onClick={handleSubmit}>
-          {loading ? "Loading..." : "Submit"}
-        </button>
+        <Button
+          type="submit"
+          variant="contained"
+          disabled={loading}
+          onClick={handleSubmit}
+        >
+          {loading ? (
+            "Loading..."
+          ) : (
+            <FormattedMessage
+              id="submit"
+              defaultMessage="submit"
+            />
+          )}
+        </Button>
         <hr />
       </div>
 

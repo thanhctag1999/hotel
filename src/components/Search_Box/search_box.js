@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
+import Button from "@mui/material/Button";
 import axios from "axios";
 
 const SearchBox = () => {
@@ -55,7 +56,8 @@ const SearchBox = () => {
       {/* Date inputs and search button */}
       <input type="date" placeholder="Check in" />
       <input type="date" placeholder="Check out" />
-      <button>Search</button>
+      <button className="btn">Search</button>
+
 
       {/* Modal */}
       {modalVisible && (
