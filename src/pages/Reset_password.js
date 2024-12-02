@@ -15,6 +15,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const ResetPassword = () => {
+  const API_URL = process.env.REACT_APP_API;
   const navigate = useNavigate();
   const location = useLocation();
   const [password, setPassword] = useState("");
@@ -42,7 +43,7 @@ const ResetPassword = () => {
       setLoading(true);
 
       const response = await axios.post(
-        `https://api-tltn.onrender.com/api/v1/user/change-password-forgot/${token}`,
+        `${API_URL}/api/v1/user/change-password-forgot/${token}`,
         {
           password, // Send the new password in the body
         }

@@ -18,7 +18,7 @@ import CreateRoom from "./pages/Manage_Hotel/components/CreateRoom";
 import HotelDetail from "./pages/Hotel_detail";
 
 function App() {
-  const [locale, setLocale] = useState(LOCALES.ENGLISH);
+  const [locale, setLocale] = useState(localStorage.getItem("language"));
   const changeLanguage = (locale) => {
     setLocale(locale);
   }

@@ -19,8 +19,10 @@ import { FormattedMessage } from "react-intl";
 
 
 const Header = ({ changeLanguage }) => {
-  const [language, setLanguage] = useState("en-US");
-  const [flagSrc, setFlagSrc] = useState(us); // default flag
+  const [language, setLanguage] = useState(localStorage.getItem("language"));
+  const [flagSrc, setFlagSrc] = useState(
+    localStorage.getItem("language") === "vi-VN" ? vn : us
+  ); // default flag
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -37,6 +39,7 @@ const Header = ({ changeLanguage }) => {
   };
   const handleChange = (event) => {
     const selectedLanguage = event.target.value;
+    localStorage.setItem("language", selectedLanguage);
     setLanguage(selectedLanguage);
     changeLanguage(selectedLanguage);
 

@@ -14,6 +14,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { FormattedMessage } from "react-intl";
 
 const BookingHistory = () => {
+  const API_URL = process.env.REACT_APP_API;
   const today = new Date();
   const [bookingHistory, setBookingHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -43,7 +44,7 @@ const BookingHistory = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `https://api-tltn.onrender.com/api/v1/booking/getBookingByUserID/${localStorage.getItem(
+          `${API_URL}/api/v1/booking/getBookingByUserID/${localStorage.getItem(
             "userId"
           )}`
         );
@@ -71,7 +72,7 @@ const BookingHistory = () => {
   const handleCancelBooking = async (bookingId) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/v1/booking/cancelBooking/${bookingId}`
+        `${API_URL}/api/v1/booking/cancelBooking/${bookingId}`
       );
       if (response.status === 200) {
         toast.success("Booking cancelled successfully!"); // Show success toast
@@ -119,10 +120,15 @@ const BookingHistory = () => {
               <ListItem key={booking.id} sx={{ marginBottom: 2 }}>
                 <img
                   className="list-hotel-img"
-                  src={booking.image_hotel || "https://via.placeholder.com/150"}
+                  src={`${API_URL}/${booking.image_path}`}
                   alt={booking.hotel_name}
-                  style={{ width: 100, height: 100, marginRight: 16 }} // Adjust size and spacing
+                  style={{ width: 100, height: 100, marginRight: 16 }}
+                  onError={(e) => {
+                    e.target.src =
+                      "https://grandtouranehotel.com/uploads/product/sp_55.jpg";
+                  }}
                 />
+
                 <ListItemText
                   primary={`${booking.hotel_name} - ${booking.room_id}`}
                   secondary={

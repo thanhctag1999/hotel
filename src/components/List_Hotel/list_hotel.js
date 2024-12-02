@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import locationIcon from "../../assests/icons/location.png"; // Changed variable name to avoid conflict
 
 export default function List_Hotel() {
+  const API_URL = process.env.REACT_APP_API;
   const [hotels, setHotels] = useState([]);
   const [locations, setLocations] = useState([]); // Store locations as an array
   const [loading, setLoading] = useState(true); // State for loading
@@ -23,9 +24,7 @@ export default function List_Hotel() {
   useEffect(() => {
     const fetchHotels = async () => {
       try {
-        const response = await axios.get(
-          "https://api-tltn.onrender.com/api/v1/hotel/list-all"
-        );
+        const response = await axios.get(`${API_URL}/api/v1/hotel/list-all`);
         setHotels(response.data.data);
       } catch (error) {
         console.error("There was an error fetching the hotels!", error);
@@ -35,7 +34,7 @@ export default function List_Hotel() {
     const fetchLocations = async () => {
       try {
         const response = await axios.get(
-          "https://api-tltn.onrender.com/api/v1/location/list-all"
+          `${API_URL}/api/v1/location/list-all`
         );
         if (response.status === 200) {
           setLocations(response.data.data); // Set the data in state
@@ -155,12 +154,12 @@ export default function List_Hotel() {
             <div className="flex-hotel">
               <img
                 className="list-hotel-img"
-                src={
-                  hotel.image_hotel
-                    ? `https://api-tltn.onrender.com/${hotel.image_path}`
-                    : "https://via.placeholder.com/150"
-                } // Fallback image
+                src={`https://api-tltn.onrender.com/${hotel.image_path}`}
                 alt={hotel.hotel_name}
+                onError={(e) => {
+                  e.target.src =
+                    "https://grandtouranehotel.com/uploads/product/sp_55.jpg";
+                }}
               />
 
               <div className="list-hotel-contain">

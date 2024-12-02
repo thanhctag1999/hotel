@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "../css/login.css";
 
 const Login = () => {
+  const API_URL = process.env.REACT_APP_API;
   const navigate = useNavigate();
   const [step, setStep] = useState("email"); // Track current step: 'email' or 'password'
   const [email, setEmail] = useState("");
@@ -28,13 +29,10 @@ const Login = () => {
     try {
       setLoading(true);
 
-      const response = await axios.post(
-        "https://api-tltn.onrender.com/api/v1/user/login",
-        {
-          email,
-          password,
-        }
-      );
+      const response = await axios.post(`${API_URL}/api/v1/user/login`, {
+        email,
+        password,
+      });
 
       if (response && response.status === 200) {
         const { data } = response.data;
@@ -62,12 +60,9 @@ const Login = () => {
   const handleGoogleLoginSuccess = async (credentialResponse) => {
     try {
       setLoading(true);
-      const result = await axios.post(
-        "https://api-tltn.onrender.com/api/v1/user/login/google",
-        {
-          token: credentialResponse.credential,
-        }
-      );
+      const result = await axios.post(`${API_URL}/api/v1/user/login/google`, {
+        token: credentialResponse.credential,
+      });
 
       if (result && result.status === 200) {
         const { data } = result.data;
@@ -101,7 +96,7 @@ const Login = () => {
       setLoading(true);
 
       const response = await axios.post(
-        "https://api-tltn.onrender.com/api/v1/user/forgot-password",
+        `${API_URL}/api/v1/user/forgot-password`,
         {
           email,
         }
@@ -117,6 +112,10 @@ const Login = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleBack = () => {
+    setStep("email"); // Go back to the email step
   };
 
   return (
@@ -154,6 +153,9 @@ const Login = () => {
                 Forgot Password?
               </a>
             </div>
+            <button type="button" onClick={handleBack} className="back-button">
+              Back
+            </button>
           </form>
         )}
 

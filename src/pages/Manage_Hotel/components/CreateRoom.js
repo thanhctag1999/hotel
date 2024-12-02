@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 
 const CreateRoom = () => {
+  const API_URL = process.env.REACT_APP_API;
   const navigate = useNavigate();
   const [roomData, setRoomData] = useState({
     room_type_id: "1",
@@ -41,9 +42,15 @@ const CreateRoom = () => {
     };
 
     try {
+      const token = localStorage.getItem("token");
       const response = await axios.post(
-        "https://api-tltn.onrender.com/api/v1/room/createRoom",
-        roomPayload
+        `${API_URL}/api/v1/room/createRoom`,
+        roomPayload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (response.status === 201) {
         toast.success("Room created successfully!");

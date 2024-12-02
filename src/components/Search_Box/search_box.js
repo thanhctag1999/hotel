@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 
 const SearchBox = () => {
+  const API_URL = process.env.REACT_APP_API;
   const [locations, setLocations] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState("");
@@ -13,7 +14,7 @@ const SearchBox = () => {
     const fetchLocations = async () => {
       try {
         const response = await axios.get(
-          "https://api-tltn.onrender.com/api/v1/location/list-all"
+          `${API_URL}/api/v1/location/list-all`
         );
         if (response.status === 200) {
           setLocations(response.data.data); // Set the data in state

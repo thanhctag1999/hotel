@@ -23,6 +23,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { FormattedMessage } from "react-intl";
 
 const ManageRooms = () => {
+  const API_URL = process.env.REACT_APP_API;
   const navigate = useNavigate();
   const [hotel, setHotel] = useState([]);
   const [rooms, setRooms] = useState([]);
@@ -47,7 +48,7 @@ const ManageRooms = () => {
         setLoading(true);
         const userId = localStorage.getItem("userId");
         const response = await axios.get(
-          `https://api-tltn.onrender.com/api/v1/hotel/getHotelByUserId/${userId}`,
+          `${API_URL}/api/v1/hotel/getHotelByUserId/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -68,7 +69,7 @@ const ManageRooms = () => {
     const fetchRooms = async (hotelId) => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/room/getRoomsByHotelId/${hotelId}`
+          `${API_URL}/api/v1/room/getRoomsByHotelId/${hotelId}`
         );
         if (response.status === 200) {
           setRooms(response.data.data);
@@ -114,7 +115,7 @@ const ManageRooms = () => {
       };
 
       const response = await axios.post(
-        `https://api-tltn.onrender.com/api/v1/room/updateRoom`,
+        `${API_URL}/api/v1/room/updateRoom`,
         requestBody
       );
 
@@ -135,7 +136,7 @@ const ManageRooms = () => {
   const handleDeleteRoom = async (id) => {
     try {
       const response = await axios.get(
-        `https://api-tltn.onrender.com/api/v1/room/deleteRoom/${id}`
+        `${API_URL}/api/v1/room/deleteRoom/${id}`
       );
       if (response.status === 200) {
         toast.success("Delete room successful");

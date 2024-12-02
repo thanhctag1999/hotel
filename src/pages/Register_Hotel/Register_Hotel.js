@@ -8,6 +8,7 @@ import "./register_hotel.css";
 
 
 const RegisterHotel = () => {
+  const API_URL = process.env.REACT_APP_API;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // Add loading state
 
@@ -21,7 +22,7 @@ const RegisterHotel = () => {
       try {
         setLoading(true); // Set loading to true before making the request
         const response = await axios.get(
-          `https://api-tltn.onrender.com/api/v1/user/registerHost/${userID}`
+          `${API_URL}/api/v1/user/registerHost/${userID}`
         );
 
         if (response && response.status === 200) {

@@ -25,6 +25,7 @@ import { FormattedMessage } from "react-intl";
 import "react-toastify/dist/ReactToastify.css";
 
 const HotelDetail = () => {
+  const API_URL = process.env.REACT_APP_API;
   const { hotel_id } = useParams();
   const [numPeople, setNumPeople] = useState(1);
   const today = new Date();
@@ -76,7 +77,7 @@ const HotelDetail = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `https://api-tltn.onrender.com/api/v1/hotel/findById/${hotel_id}`
+          `${API_URL}/api/v1/hotel/findById/${hotel_id}`
         );
         if (response.status === 200 && response.data && response.data.data) {
           setHotel(response.data.data); // Store the hotel object directly
@@ -93,7 +94,7 @@ const HotelDetail = () => {
     const fetchService = async () => {
       try {
         const response = await axios.get(
-          `https://api-tltn.onrender.com/api/v1/service/findByHotelId/${hotel_id}`
+          `${API_URL}/api/v1/service/findByHotelId/${hotel_id}`
         );
         if (response.status === 200 && response.data && response.data.data) {
           setService(response.data.data); // Store service array
@@ -108,7 +109,7 @@ const HotelDetail = () => {
     const fetchComments = async () => {
       try {
         const response = await axios.get(
-          `https://api-tltn.onrender.com/api/v1/comment/getCommentByHotelId/${hotel_id}`
+          `${API_URL}/api/v1/comment/getCommentByHotelId/${hotel_id}`
         );
         if (response.status === 200 && response.data && response.data.data) {
           setComments(response.data.data);
@@ -123,7 +124,7 @@ const HotelDetail = () => {
     const fetchRooms = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/room/getRoomsByHotelId/${hotel_id}`
+          `${API_URL}/api/v1/room/getRoomsByHotelId/${hotel_id}`
         );
         if (response.status === 200 && response.data && response.data.data) {
           setRooms(response.data.data);
@@ -150,10 +151,11 @@ const HotelDetail = () => {
   };
 
   const handleCommentSubmit = async () => {
+    const API_URL = process.env.REACT_APP_API;
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
     const fullName = localStorage.getItem("fullName");
-    const apiUrl = "http://localhost:3000/api/v1/comment/create";
+    const apiUrl = `${API_URL}/api/v1/comment/create`;
 
     if (newComment.trim() !== "") {
       try {
@@ -251,7 +253,7 @@ const HotelDetail = () => {
         };
         const token = localStorage.getItem("token");
         const response = await axios.post(
-          "https://api-tltn.onrender.com/api/v1/booking/createboking",
+          `${API_URL}/api/v1/booking/createboking`,
           body,
           {
             headers: {
@@ -335,13 +337,14 @@ const HotelDetail = () => {
                     }}
                   >
                     <img
-                      src={
-                        hotel.imageHotel
-                          ? `https://api-tltn.onrender.com/${hotel.imagePath}`
-                          : "https://via.placeholder.com/150"
-                      }
-                      alt={hotel.hotelName}
-                      style={{ width: "100%", borderRadius: 8 }}
+                      className="list-hotel-img"
+                      src={`https://api-tltn.onrender.com/${hotel.image_path}`}
+                      alt={hotel.hotel_name}
+                      style={{ width: "100%", borderRadius: 8, objectFit: "cover" }}
+                      onError={(e) => {
+                        e.target.src =
+                          "https://grandtouranehotel.com/uploads/product/sp_55.jpg";
+                      }}
                     />
                   </Box>
 
@@ -525,7 +528,10 @@ const HotelDetail = () => {
                     {loading ? (
                       "Loading in..."
                     ) : (
-                      <FormattedMessage id="booking_now" defaultMessage="booking_now" />
+                      <FormattedMessage
+                        id="booking_now"
+                        defaultMessage="booking_now"
+                      />
                     )}
                   </Button>
                 </>

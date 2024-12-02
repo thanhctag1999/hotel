@@ -6,6 +6,7 @@ import { FormattedMessage } from "react-intl";
 import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
+  const API_URL = process.env.REACT_APP_API;
   const navigate = useNavigate();
   const [fullName, setFullName] = useState("");
   const [userName, setUserName] = useState("");
@@ -34,7 +35,7 @@ const Register = () => {
       try {
         setLoading(true); // Set loading to true before making the request
         const response = await axios.post(
-          "https://api-tltn.onrender.com/api/v1/user/register",
+          `${API_URL}/api/v1/user/register`,
           {
             userName: userName,
             fullName: fullName,
@@ -44,15 +45,6 @@ const Register = () => {
         );
 
         if (response && response.status === 201) {
-          const { data } = response.data;
-          // localStorage.setItem("token", data.token);
-          // localStorage.setItem("userId", data.id);
-          // localStorage.setItem("userName", data.userName);
-          // localStorage.setItem("phoneNumber", data.phoneNumber);
-          // localStorage.setItem("address", data.address);
-          // localStorage.setItem("fullName", data.fullName);
-
-          // // Navigate to the user profile page
           toast.success(<FormattedMessage id="auth" defaultMessage="auth" />);
         } else {
           toast.error(response.data.message);

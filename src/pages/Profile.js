@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 const Profile = () => {
+  const API_URL = process.env.REACT_APP_API;
   const [phone, setPhone] = useState(
     localStorage.getItem("phoneNumber") !== "[object Object]"
       ? localStorage.getItem("phoneNumber")
@@ -19,7 +20,7 @@ const Profile = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://api-tltn.onrender.com/api/v1/user/update-info",
+        `${API_URL}/api/v1/user/update-info`,
         {
           userName: localStorage.getItem("userName"),
           fullName: localStorage.getItem("fullName"),

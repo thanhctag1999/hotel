@@ -15,6 +15,7 @@ import { FormattedMessage } from "react-intl";
 
 
 const Discount = () => {
+  const API_URL = process.env.REACT_APP_API;
   const [promotions, setPromotions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hotel, setHotel] = useState([]);
@@ -39,7 +40,7 @@ const Discount = () => {
       setIsLoading(true);
       const userId = localStorage.getItem("userId");
       const response = await axios.get(
-        `https://api-tltn.onrender.com/api/v1/hotel/getHotelByUserId/${userId}`,
+        `${API_URL}/api/v1/hotel/getHotelByUserId/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -74,7 +75,7 @@ const Discount = () => {
     try {
       const token = localStorage.getItem("token"); // Retrieve the token from localStorage
       const response = await axios.get(
-        "https://api-tltn.onrender.com/api/v1/promotion/promotions",
+        `${API_URL}/api/v1/promotion/promotions`,
         {
           headers: {
             Authorization: `Bearer ${token}`, // Add the Authorization header
@@ -120,7 +121,7 @@ const Discount = () => {
       // Loop through selected rooms and make API calls for each
       for (const roomId of selectedRoomIds) {
         const response = await axios.post(
-          "http://localhost:3000/api/v1/promotion/promotions/room",
+          `${API_URL}/api/v1/promotion/promotions/room`,
           {
             promotion_id: selectedPromotion,
             hotel_id: hotel.id, // Assuming `hotel.id` is available from `fetchHotel`

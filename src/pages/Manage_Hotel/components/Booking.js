@@ -18,6 +18,7 @@ import axios from "axios";
 import { FormattedMessage } from "react-intl";
 
 const Booking = () => {
+  const API_URL = process.env.REACT_APP_API;
   const [hotel, setHotel] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [bookings, setBookings] = useState([]);
@@ -36,7 +37,7 @@ const Booking = () => {
 
         // Fetch hotel details
         const hotelResponse = await axios.get(
-          `https://api-tltn.onrender.com/api/v1/hotel/getHotelByUserId/${userId}`,
+          `${API_URL}/api/v1/hotel/getHotelByUserId/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -50,7 +51,7 @@ const Booking = () => {
 
           // Fetch bookings for the fetched hotel
           const bookingsResponse = await axios.get(
-            `http://localhost:3000/api/v1/booking/getBookingByHotelId/${hotelData.id}`,
+            `${API_URL}/api/v1/booking/getBookingByHotelId/${hotelData.id}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -70,7 +71,7 @@ const Booking = () => {
 
           // Fetch income for the hotel
           const incomeResponse = await axios.get(
-            `http://localhost:3000/api/v1/hotel/getIncomeById/${hotelData.id}`,
+            `${API_URL}/api/v1/hotel/getIncomeById/${hotelData.id}`,
           );
 
           if (incomeResponse.status === 200) {
@@ -103,7 +104,7 @@ const Booking = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `http://localhost:3000/api/v1/booking/cancelBooking/${bookingId}`,
+        `${API_URL}/api/v1/booking/cancelBooking/${bookingId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -8,6 +8,7 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 
 const CreateHotel = () => {
+  const API_URL = process.env.REACT_APP_API;
   const [locations, setLocations] = useState([]);
   const [services, setServices] = useState([]);
   const [hotel, setHotel] = useState([]);
@@ -26,7 +27,7 @@ const CreateHotel = () => {
     const fetchLocations = async () => {
       try {
         const response = await axios.get(
-          "https://api-tltn.onrender.com/api/v1/location/list-all"
+          `${API_URL}/api/v1/location/list-all`
         );
         if (response.status === 200) {
           setLocations(response.data.data);
@@ -39,7 +40,7 @@ const CreateHotel = () => {
     const fetchServices = async () => {
       try {
         const response = await axios.get(
-          "https://api-tltn.onrender.com/api/v1/service/list-all"
+          `${API_URL}/api/v1/service/list-all`
         );
         if (response.status === 200) {
           setServices(response.data.data);
@@ -54,7 +55,7 @@ const CreateHotel = () => {
         setLoading(true);
         const userId = localStorage.getItem("userId");
         const response = await axios.get(
-          `https://api-tltn.onrender.com/api/v1/hotel/getHotelByUserId/${userId}`,
+          `${API_URL}/api/v1/hotel/getHotelByUserId/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -69,7 +70,7 @@ const CreateHotel = () => {
           setHotelName(response.data.data.hotelName);
           setSelectedServices(response.data.data.services);
           setImage(
-            `https://api-tltn.onrender.com/public/images/hotel/${response.data.data.imageHotel}`
+            `${API_URL}/public/images/hotel/${response.data.data.imageHotel}`
           );
           setDescription(response.data.data.description || ""); // Set description from API if available
         }
@@ -138,8 +139,8 @@ const CreateHotel = () => {
 
     try {
       const url = hotelId
-        ? `https://api-tltn.onrender.com/api/v1/hotel/update/${hotelId}`
-        : `https://api-tltn.onrender.com/api/v1/hotel/register`;
+        ? `${API_URL}/api/v1/hotel/update/${hotelId}`
+        : `${API_URL}/api/v1/hotel/register`;
 
       const method = hotelId ? "PUT" : "POST";
 
