@@ -19,9 +19,15 @@ import { FormattedMessage } from "react-intl";
 
 
 const Header = ({ changeLanguage }) => {
-  const [language, setLanguage] = useState(localStorage.getItem("language"));
+  const [language, setLanguage] = useState(
+    localStorage.getItem("language") != null
+      ? localStorage.getItem("language")
+      : "vi-VN"
+  );
   const [flagSrc, setFlagSrc] = useState(
-    localStorage.getItem("language") === "vi-VN" ? vn : us
+    localStorage.getItem("language") != null && localStorage.getItem("language") == "vi-VN"
+      ? vn
+      : us
   ); // default flag
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
