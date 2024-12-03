@@ -25,9 +25,9 @@ const Header = ({ changeLanguage }) => {
       : "vi-VN"
   );
   const [flagSrc, setFlagSrc] = useState(
-    localStorage.getItem("language") != null && localStorage.getItem("language") == "vi-VN"
-      ? vn
-      : us
+    localStorage.getItem("language") === "en-US"
+      ? us
+      : vn
   ); // default flag
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);

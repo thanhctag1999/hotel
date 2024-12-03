@@ -155,6 +155,7 @@ const CreateHotel = () => {
       const data = await response.json();
 
       if (response && response.status === (hotelId ? 200 : 201)) {
+        localStorage.setItem("role", "2");
         toast.success(hotelId ? "Update successful" : "Create successful");
       } else {
         toast.error(
