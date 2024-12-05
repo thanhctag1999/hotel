@@ -164,12 +164,6 @@ const Header = ({ changeLanguage }) => {
               </Tooltip>
             ) : (
               <div className="">
-                <Link className="header-link" to="/register_hotel">
-                  <FormattedMessage
-                    id="register_hotel"
-                    defaultMessage="register_hotel"
-                  />
-                </Link>
                 <Link className="header-link" to="/login">
                   <FormattedMessage id="login" defaultMessage="login" /> /
                   <FormattedMessage id="register" defaultMessage="register" />

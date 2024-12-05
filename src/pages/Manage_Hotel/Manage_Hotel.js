@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 import { Tabs, Tab, Box } from "@mui/material";
 import "./manage_hotel.css";
@@ -9,9 +10,19 @@ import Booking from "./components/Booking";
 
 const ManageHotel = () => {
   const [activeTab, setActiveTab] = useState("hotel");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
+
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
   };
+
   return (
     <div className="page-container">
       <h2>

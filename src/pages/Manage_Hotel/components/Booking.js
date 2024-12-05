@@ -157,7 +157,7 @@ const Booking = () => {
         </Typography>
         <Typography variant="h6" marginBottom={2} color="primary">
           <FormattedMessage id="income" defaultMessage="income" />:{" "}
-          {income ? `${income.toLocaleString()} VND` : "Loading..."}
+          {income ? `${income.toLocaleString()} VND` : "0.0 VND"}
         </Typography>
         <Grid container spacing={2}>
           {filteredBookings.length > 0 ? (

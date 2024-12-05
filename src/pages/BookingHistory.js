@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { FormattedMessage } from "react-intl";
+import { useNavigate } from "react-router-dom"; // Use this if you are using react-router
 
 const BookingHistory = () => {
   const API_URL = process.env.REACT_APP_API;
@@ -19,6 +20,7 @@ const BookingHistory = () => {
   const [bookingHistory, setBookingHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cancelledBookings, setCancelledBookings] = useState([]); // State to track cancelled bookings
+  const navigate = useNavigate(); // Initialize navigation
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -40,13 +42,26 @@ const BookingHistory = () => {
   };
 
   useEffect(() => {
+    // Check if token exists
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Session expired. Redirecting to login.");
+      navigate("/login"); // Redirect to login page
+      return;
+    }
+
     const fetchDataBooking = async () => {
       try {
         setLoading(true);
         const response = await axios.get(
           `${API_URL}/api/v1/booking/getBookingByUserID/${localStorage.getItem(
             "userId"
-          )}`
+          )}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Include token in request
+            },
+          }
         );
         if (response && response.status === 200) {
           const sortedBookingHistory = response.data.data.sort((a, b) => {
@@ -67,12 +82,18 @@ const BookingHistory = () => {
     };
 
     fetchDataBooking();
-  }, []);
+  }, [API_URL, navigate]);
 
   const handleCancelBooking = async (bookingId) => {
     try {
+      const token = localStorage.getItem("token");
       const response = await axios.get(
-        `${API_URL}/api/v1/booking/cancelBooking/${bookingId}`
+        `${API_URL}/api/v1/booking/cancelBooking/${bookingId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in request
+          },
+        }
       );
       if (response.status === 200) {
         toast.success("Booking cancelled successfully!"); // Show success toast

@@ -13,6 +13,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { FormattedMessage } from "react-intl";
 
 const ResetPassword = () => {
   const API_URL = process.env.REACT_APP_API;
@@ -69,10 +70,12 @@ const ResetPassword = () => {
     >
       <ToastContainer />
       <div className="reset-password-container">
-        <h2>Reset Your Password</h2>
+        <h2>
+          <FormattedMessage id="resetPass" defaultMessage="resetPass" />
+        </h2>
         <form onSubmit={handlePasswordReset}>
           <TextField
-            label="New Password"
+            label={<FormattedMessage id="newPass" defaultMessage="newPass" />}
             type={showPassword ? "text" : "password"}
             variant="outlined"
             fullWidth
@@ -94,7 +97,7 @@ const ResetPassword = () => {
             }}
           />
           <TextField
-            label="Confirm Password"
+            label={<FormattedMessage id="confirmPass" defaultMessage="confirmPass" />}
             type={showConfirmPassword ? "text" : "password"}
             variant="outlined"
             fullWidth
@@ -126,7 +129,7 @@ const ResetPassword = () => {
             {loading ? (
               <CircularProgress size={24} color="inherit" />
             ) : (
-              "Reset Password"
+              <FormattedMessage id="confirm" defaultMessage="confirm" />
             )}
           </Button>
         </form>

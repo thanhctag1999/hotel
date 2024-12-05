@@ -273,7 +273,9 @@ const Discount = () => {
                       onChange={() => handleCheckboxChange(room.id)}
                     />
                   }
-                  label={`${room.room_number} - ${formatPrice(room.price)} VND`}
+                  label={`${room.room_number} - ${formatPrice(
+                    room.new_price
+                  )} VND`}
                 />
               </li>
             ))}

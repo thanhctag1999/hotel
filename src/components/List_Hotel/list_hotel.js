@@ -3,7 +3,9 @@ import {
   FormControl,
   MenuItem,
   Select,
-  TextField
+  TextField,
+  Autocomplete,
+  Button,
 } from "@mui/material"; // Import necessary components
 import Rating from "@mui/material/Rating";
 import axios from "axios";
@@ -21,6 +23,10 @@ export default function List_Hotel() {
   const [selectedLocation, setSelectedLocation] = useState(""); // State for selected location
   const [ratingFilter, setRatingFilter] = useState(0); // State for rating filter
 
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1); // Current page
+  const itemsPerPage = 4; // Items per page
+
   useEffect(() => {
     const fetchHotels = async () => {
       try {
@@ -33,9 +39,7 @@ export default function List_Hotel() {
 
     const fetchLocations = async () => {
       try {
-        const response = await axios.get(
-          `${API_URL}/api/v1/location/list-all`
-        );
+        const response = await axios.get(`${API_URL}/api/v1/location/list-all`);
         if (response.status === 200) {
           setLocations(response.data.data); // Set the data in state
         }
@@ -78,6 +82,25 @@ export default function List_Hotel() {
     );
   });
 
+  // Pagination logic
+  const totalItems = filteredHotels.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedHotels = filteredHotels.slice(startIndex, endIndex);
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
   if (loading) {
     return (
       <div
@@ -110,21 +133,20 @@ export default function List_Hotel() {
         />
 
         <FormControl fullWidth>
-          <Select
-            labelId="location-select-label"
-            value={selectedLocation}
-            onChange={(e) => setSelectedLocation(e.target.value)} // Update selected location
-            displayEmpty
-          >
-            <MenuItem value="">
-              <em>All Locations</em>
-            </MenuItem>
-            {locations.map((location) => (
-              <MenuItem key={location.id} value={location.id}>
-                {location.name}
-              </MenuItem>
-            ))}
-          </Select>
+          <Autocomplete
+            options={locations}
+            getOptionLabel={(option) => option.name || ""}
+            value={locations.find((loc) => loc.id === selectedLocation) || null}
+            onChange={(event, newValue) =>
+              setSelectedLocation(newValue ? newValue.id : "")
+            }
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                placeholder="All Locations"
+              />
+            )}
+          />
         </FormControl>
 
         <FormControl fullWidth>
@@ -144,7 +166,7 @@ export default function List_Hotel() {
         </FormControl>
       </div>
 
-      {filteredHotels.map((hotel) => (
+      {paginatedHotels.map((hotel) => (
         <Link
           className="hotel-list-item"
           to={`/hotel_detail/${hotel.id}`}
@@ -184,6 +206,29 @@ export default function List_Hotel() {
           </div>
         </Link>
       ))}
+
+      {/* Pagination Controls */}
+      <div
+        style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
+      >
+        <Button
+          variant="contained"
+          onClick={handlePreviousPage}
+          disabled={currentPage === 1}
+        >
+          {"<"}
+        </Button>
+        <span style={{ margin: "10px 10px" }}>
+          {currentPage} / {totalPages}
+        </span>
+        <Button
+          variant="contained"
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+        >
+          {">"}
+        </Button>
+      </div>
     </div>
   );
 }

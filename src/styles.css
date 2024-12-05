@@ -250,7 +250,7 @@ h4 {
   background-color: #333;
   color: white;
 }
-.page-container input{
+/* .page-container input{
     min-width: 15%;
     height: 30px;
     padding: 10px;
@@ -258,7 +258,7 @@ h4 {
     margin: 10px 5px;
     border: 3px solid #ec6a00;
     border-radius: 25px;
-}
+} */
 
 /* Modal styles */
 .location-modal {
