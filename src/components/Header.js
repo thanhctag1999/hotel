@@ -99,7 +99,7 @@ const Header = ({ changeLanguage }) => {
               <FormattedMessage id="home" defaultMessage="home" />
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink
               className="header-link"
               to="/hotels"
@@ -107,7 +107,7 @@ const Header = ({ changeLanguage }) => {
             >
               <FormattedMessage id="hotels" defaultMessage="hotels" />
             </NavLink>
-          </li>
+          </li> */}
           <li>
             <NavLink
               className="header-link"

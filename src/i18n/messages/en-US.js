@@ -84,5 +84,6 @@ export default {
   resetPass: "Reset Your Password",
   newPass: "New Password",
   confirmPass: "Confirm Password",
+  trending: "Top Location Trending"
   // Other translations...
 };

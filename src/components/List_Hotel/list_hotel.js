@@ -13,6 +13,44 @@ import { FormattedMessage } from "react-intl";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import locationIcon from "../../assests/icons/location.png"; // Changed variable name to avoid conflict
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+  position: "relative",
+  overflow: "hidden",
+  height: "250px", // Set a fixed height for the Item
+}));
+
+const ImageContainer = styled(Box)({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  zIndex: 1,
+});
+
+const OverlayText = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  bottom: "10px",
+  left: "10px",
+  color: "#fff",
+  zIndex: 2,
+  backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background for text
+  padding: "5px 10px",
+  borderRadius: "5px",
+  ...theme.typography.subtitle1,
+}));
 
 export default function List_Hotel() {
   const API_URL = process.env.REACT_APP_API;
@@ -113,7 +151,7 @@ export default function List_Hotel() {
       >
         <CircularProgress />
       </div>
-    ); // Show spinner while loading
+    );
   }
 
   return (
@@ -141,10 +179,7 @@ export default function List_Hotel() {
               setSelectedLocation(newValue ? newValue.id : "")
             }
             renderInput={(params) => (
-              <TextField
-                {...params}
-                placeholder="All Locations"
-              />
+              <TextField {...params} placeholder="All Locations" />
             )}
           />
         </FormControl>
@@ -229,6 +264,89 @@ export default function List_Hotel() {
           {">"}
         </Button>
       </div>
+
+      <Box sx={{ flexGrow: 1, marginTop: "30px", margin: "50px" }}>
+        <h2>
+          <FormattedMessage id="trending" defaultMessage="trending" />
+        </h2>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <Item
+              onClick={() => {
+                setSelectedLocation(11);
+              }}
+            >
+              <ImageContainer
+                style={{
+                  backgroundImage:
+                    'url("https://file3.qdnd.vn/data/images/0/2022/10/24/phucthang/hanoi%20trong%20toi1.jpg?dpi=150&quality=100&w=870")',
+                }}
+              />
+              <OverlayText>Hà Nội</OverlayText>
+            </Item>
+          </Grid>
+          <Grid item xs={6}>
+            <Item
+              onClick={() => {
+                setSelectedLocation(59);
+              }}
+            >
+              <ImageContainer
+                style={{
+                  backgroundImage:
+                    'url("https://www.vietnam-briefing.com/news/wp-content/uploads/2018/07/Vietnam-Briefing-Vietnams-Economy-in-the-in-the-first-half-of-2018.jpg")',
+                }}
+              />
+              <OverlayText>Hồ Chí Minh</OverlayText>
+            </Item>
+          </Grid>
+          <Grid item xs={4}>
+            <Item
+              onClick={() => {
+                setSelectedLocation(21);
+              }}
+            >
+              <ImageContainer
+                style={{
+                  backgroundImage:
+                    'url("https://vcdn1-dulich.vnecdn.net/2022/06/01/CauVangDaNang-1654082224-7229-1654082320.jpg?w=0&h=0&q=100&dpr=2&fit=crop&s=MeVMb72UZA27ivcyB3s7Kg")',
+                }}
+              />
+              <OverlayText>Đà Nẵng</OverlayText>
+            </Item>
+          </Grid>
+          <Grid item xs={4}>
+            <Item
+              onClick={() => {
+                setSelectedLocation(38);
+              }}
+            >
+              <ImageContainer
+                style={{
+                  backgroundImage:
+                    'url("https://www.agoda.com/wp-content/uploads/2024/03/Cai-Rang-Can-Tho-1244x700.jpg")',
+                }}
+              />
+              <OverlayText>Cần Thơ</OverlayText>
+            </Item>
+          </Grid>
+          <Grid item xs={4}>
+            <Item
+              onClick={() => {
+                setSelectedLocation(39);
+              }}
+            >
+              <ImageContainer
+                style={{
+                  backgroundImage:
+                    'url("https://file1.dangcongsan.vn/data/0/images/2024/04/11/upload_673/hue-imperial-gate-1024x683-754-17016811818591749547652.png")',
+                }}
+              />
+              <OverlayText>Huế</OverlayText>
+            </Item>
+          </Grid>
+        </Grid>
+      </Box>
     </div>
   );
 }

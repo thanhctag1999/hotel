@@ -87,5 +87,6 @@ export default {
   resetPass: "Đổi mật khẩu",
   newPass: "Mật khẩu mới",
   confirmPass: "Xác nhận mật khẩu",
+  trending: "Địa điểm thịnh hành",
   // Other translations...
 };
