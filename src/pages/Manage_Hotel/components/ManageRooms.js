@@ -29,6 +29,7 @@ const ManageRooms = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [reload, setReload] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(null);
 
   const formatPrice = (price) => {
@@ -40,6 +41,19 @@ const ManageRooms = () => {
       .format(price)
       .replace("₫", "")
       .trim();
+  };
+
+  const fetchRooms = async (hotelId) => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/api/v1/room/getRoomsByHotelId/${hotelId}`
+      );
+      if (response.status === 200) {
+        setRooms(response.data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching rooms:", error);
+    }
   };
 
   useEffect(() => {
@@ -66,21 +80,10 @@ const ManageRooms = () => {
       }
     };
 
-    const fetchRooms = async (hotelId) => {
-      try {
-        const response = await axios.get(
-          `${API_URL}/api/v1/room/getRoomsByHotelId/${hotelId}`
-        );
-        if (response.status === 200) {
-          setRooms(response.data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching rooms:", error);
-      }
-    };
+
 
     fetchHotel();
-  }, []);
+  }, [reload]);
 
   const handleCreateRoomClick = () => {
     localStorage.setItem("hotelId", hotel.id);
@@ -97,46 +100,61 @@ const ManageRooms = () => {
     setSelectedRoom(null);
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setSelectedRoom((prev) => ({ ...prev, [name]: value }));
-  };
+const handleInputChange = (e) => {
+  const { name, value } = e.target;
 
-  const handleUpdateRoom = async () => {
-    try {
-      const requestBody = {
-        id: selectedRoom.id,
-        hotel_id: selectedRoom.hotel_id,
-        room_type_id: 1,
-        room_number: selectedRoom.room_number,
-        price: selectedRoom.price,
-        description: selectedRoom.description,
-        availability_status: selectedRoom.availability_status,
-      };
+  setSelectedRoom((prev) => ({
+    ...prev,
+    [name]: Number(value), // Update the specified field with the new numeric value
+    new_price: Number(value), // Always update new_price with the same value
+  }));
+};
 
-      const response = await axios.post(
-        `${API_URL}/api/v1/room/updateRoom`,
-        requestBody
-      );
 
-      if (response.status === 200) {
-        toast.success("Update room successful");
-        setRooms((prevRooms) =>
-          prevRooms.map((room) =>
-            room.id === selectedRoom.id ? selectedRoom : room
-          )
-        );
-        handleCloseModal();
+
+const handleUpdateRoom = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const requestBody = {
+      id: selectedRoom.id,
+      hotel_id: selectedRoom.hotel_id,
+      room_type_id: 1,
+      room_number: selectedRoom.room_number,
+      price: selectedRoom.original_price,
+      description: selectedRoom.description,
+      availability_status: selectedRoom.availability_status,
+    };
+
+    const response = await axios.post(
+      `${API_URL}/api/v1/room/updateRoom`,
+      requestBody,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include token in request
+        },
       }
-    } catch (error) {
-      toast.error("Error updating room. Please try again.");
+    );
+
+    if (response.status === 200) {
+      toast.success("Update room successful");
+      setReload(!reload);
+      handleCloseModal();
     }
-  };
+  } catch (error) {
+    toast.error("Error updating room. Please try again.");
+  }
+};
 
   const handleDeleteRoom = async (id) => {
     try {
+    const token = localStorage.getItem("token");
       const response = await axios.get(
-        `${API_URL}/api/v1/room/deleteRoom/${id}`
+        `${API_URL}/api/v1/room/deleteRoom/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in request
+          },
+        }
       );
       if (response.status === 200) {
         toast.success("Delete room successful");
@@ -199,7 +217,8 @@ const ManageRooms = () => {
                     </span>{" "}
                     -{" "}
                     <span style={{ color: "red" }}>
-                      {formatPrice(room.new_price)} VND
+                      {room.new_price > 0 ? formatPrice(room.new_price) : "0"}{" "}
+                      VND
                     </span>
                   </>
                 ) : (
@@ -262,9 +281,9 @@ const ManageRooms = () => {
               <TextField
                 fullWidth
                 label="Price"
-                name="price"
+                name="original_price" // Match the key in the state
                 type="number"
-                value={formatPrice(selectedRoom.original_price)}
+                value={selectedRoom.original_price} // Bind the raw value
                 onChange={handleInputChange}
                 variant="outlined"
                 style={{ marginBottom: "16px" }}

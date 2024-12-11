@@ -181,7 +181,7 @@ const BookingHistory = () => {
                   }
                   sx={{ marginLeft: 2 }} // Add margin to ListItemText
                 />
-                {new Date(booking.check_in_date) > today &&
+                {
                   booking.booking_status === 0 &&
                   !cancelledBookings.includes(booking.id) && ( // Only show button if booking isn't cancelled
                     <Button

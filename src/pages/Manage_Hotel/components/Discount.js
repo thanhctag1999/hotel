@@ -135,16 +135,14 @@ const Discount = () => {
         );
 
         if (response.status === 201) {
-          console.log(`Successfully applied promotion to room ${roomId}`);
+          toast.success("Promotion successfully applied to selected rooms!");
         } else {
-          toast.error(`Failed to apply promotion to room ${roomId}`);
+          toast.error(response.data.message);
         }
       }
 
-      toast.success("Promotion successfully applied to selected rooms!");
     } catch (error) {
-      console.error("Error applying promotion to rooms:", error);
-      toast.error("Failed to apply promotion. Please try again.");
+      toast.error("Phòng đang được áp dụng mã giảm giá khác");
     } finally {
       setOpenModal(false);
     }
@@ -273,9 +271,9 @@ const Discount = () => {
                       onChange={() => handleCheckboxChange(room.id)}
                     />
                   }
-                  label={`${room.room_number} - ${formatPrice(
+                  label={`${room.room_number} - ${room.new_price > 0 ?formatPrice(
                     room.new_price
-                  )} VND`}
+                  ) : 0} VND`}
                 />
               </li>
             ))}

@@ -19,22 +19,25 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `${API_URL}/api/v1/user/update-info`,
-        {
+      const roomPayload = {
           userName: localStorage.getItem("userName"),
           fullName: localStorage.getItem("fullName"),
           phoneNumber: phone,
           address: address,
-        },
+        };
+
+      const token = localStorage.getItem("token");
+
+      const response = await axios.post(
+        `${API_URL}/api/v1/user/update-info`,
+        roomPayload,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-
-      if (response && response.status === 200) {
+      if (response.status === 200) {
         const { data } = response.data;
 
         // Save the token and user information to localStorage

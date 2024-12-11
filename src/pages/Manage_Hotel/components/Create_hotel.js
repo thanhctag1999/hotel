@@ -72,7 +72,9 @@ const CreateHotel = () => {
           setImage(
             `${API_URL}/public/images/hotel/${response.data.data.imageHotel}`
           );
-          setDescription(response.data.data.description || ""); // Set description from API if available
+          setDescription(
+            response.data.data.description != "[object Object]" ? response.data.data.description : ""
+          ); // Set description from API if available
         }
       } catch (error) {
         console.error("Error fetching hotel:");
@@ -160,7 +162,7 @@ const CreateHotel = () => {
       } else {
         toast.error(
           hotelId
-            ? "Update failed. Please try again."
+            ? "Update failed. Please enter all field before submit."
             : "Create failed. Please try again."
         );
       }
@@ -195,6 +197,7 @@ const CreateHotel = () => {
           <FormattedMessage id="location" defaultMessage="location" />
         </h5>
         <input
+          className="create-hotel-input"
           type="text"
           placeholder="Location"
           value={
@@ -208,6 +211,7 @@ const CreateHotel = () => {
           <FormattedMessage id="address" defaultMessage="address" />
         </h5>
         <input
+          className="create-hotel-input"
           type="text"
           placeholder="address"
           value={address}
@@ -225,6 +229,7 @@ const CreateHotel = () => {
           />
         </h5>
         <input
+          className="create-hotel-input"
           type="text"
           placeholder="Hotel Name"
           value={hotelName}
@@ -234,6 +239,7 @@ const CreateHotel = () => {
           <FormattedMessage id="hotel_image" defaultMessage="hotel_image" />
         </h5>
         <input
+          className="create-hotel-input"
           type="file"
           name="image"
           accept="image/*"
@@ -244,6 +250,11 @@ const CreateHotel = () => {
             style={{ width: "100%", objectFit: "cover", marginTop: "10px" }}
             src={image}
             alt="Selected"
+            onError={(e) => {
+              console.error("Image failed to load:", e.target.src);
+              e.target.src =
+                "https://grandtouranehotel.com/uploads/product/sp_55.jpg";
+            }}
           />
         )}
         <h5>
@@ -263,16 +274,12 @@ const CreateHotel = () => {
           />
         </h5>
         <textarea
-          placeholder={
-            <FormattedMessage
-              id="hotel_description"
-              defaultMessage="hotel_description"
-            />
-          }
-          value={description}
+          className="create-hotel-input"
+          value={description != "[object Object]" ? description : ""}
           onChange={(e) => setDescription(e.target.value)}
           rows="4"
           style={{ width: "100%", resize: "vertical", marginTop: "10px" }}
+          required
         />
       </div>
       <div className="column">
@@ -307,10 +314,7 @@ const CreateHotel = () => {
           {loading ? (
             "Loading..."
           ) : (
-            <FormattedMessage
-              id="submit"
-              defaultMessage="submit"
-            />
+            <FormattedMessage id="submit" defaultMessage="submit" />
           )}
         </Button>
         <hr />

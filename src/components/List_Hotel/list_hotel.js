@@ -211,7 +211,7 @@ export default function List_Hotel() {
             <div className="flex-hotel">
               <img
                 className="list-hotel-img"
-                src={`https://api-tltn.onrender.com/${hotel.image_path}`}
+                src={`${API_URL}/${hotel.image_path}`}
                 alt={hotel.hotel_name}
                 onError={(e) => {
                   e.target.src =

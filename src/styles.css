@@ -357,3 +357,12 @@ h4 {
   background-color: #ffdd57 !important;
   border-radius: 50%;
 }
+
+.create-hotel-input{
+  padding: 15px;
+  border-radius: 15px;
+}
+.booking-card-actions{
+  display: flex;
+
+}

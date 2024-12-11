@@ -57,10 +57,10 @@ const CreateRoom = () => {
         // Navigate back after a short delay to show the success message
         setTimeout(() => navigate(-1), 1500); // Navigate to the previous page
       } else {
-        toast.error("Failed to create room. Please try again");
+        toast.error(response.data.message);
       }
     } catch (error) {
-      toast.error("Failed to create room. Please try again");
+      toast.error(error.response.data.message);
     }
   };
 

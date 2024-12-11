@@ -73,6 +73,8 @@ export default {
   customer: "Khách hàng",
   phone: "Điện thoại",
   canceled: "Đã hủy",
+  received: "Đã nhận phòng",
+  checked_out: "Đã thanh toán",
   username: "Tài khoản",
   fullname: "Họ tên",
   update: "Cập nhật",

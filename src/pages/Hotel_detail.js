@@ -214,7 +214,8 @@ const HotelDetail = () => {
   };
 
   const calculatePrice = () => {
-    const roomPrice = rooms.find((room) => room.id === selectedRoom)?.new_price;
+    const roomPrice = rooms.find((room) => room.id === selectedRoom)?.new_price > 0 ? rooms.find((room) => room.id === selectedRoom)?.new_price : 0;
+
     if (!roomPrice) return setTotalPrice(0); // Ensure totalPrice is reset if no room is selected
 
     const start = new Date(checkInDate);
@@ -409,7 +410,7 @@ const HotelDetail = () => {
                               <span
                                 style={{ marginLeft: "10px", color: "red" }}
                               >
-                                {formatPrice(room.new_price)} VND
+                                {(room.new_price > 0 ? formatPrice(room.new_price): '0')} VND
                               </span>
                             </>
                           ) : (

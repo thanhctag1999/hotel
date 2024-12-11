@@ -1,11 +1,11 @@
 // src/components/Hotel.js
 import React from "react";
-import List_Hotel from "../components/List_Hotel/list_hotel";
+import Grid_Hotel from "../components/Grid_Hotels/grid_hotels";
 
 const Hotel = () => {
   return (
     <div className="page-container">
-      <List_Hotel />
+      <Grid_Hotel />
     </div>
   );
 };

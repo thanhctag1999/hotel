@@ -128,6 +128,62 @@ const Booking = () => {
     }
   };
 
+  const handleReceived = async (bookingId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `${API_URL}/api/v1/booking/checkedInBooking/${bookingId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        toast.success("Booking check in successfully!");
+        setBookings((prevBookings) =>
+          prevBookings.map((booking) =>
+            booking.id === bookingId
+              ? { ...booking, booking_status: 1 }
+              : booking
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Error check in booking:", error);
+      toast.error("Failed to check in booking. Please try again.");
+    }
+  };
+
+  const handleChecked = async (bookingId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `${API_URL}/api/v1/booking/checkedOutBooking/${bookingId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        toast.success("Booking checked out successfully!");
+        setBookings((prevBookings) =>
+          prevBookings.map((booking) =>
+            booking.id === bookingId
+              ? { ...booking, booking_status: 2 }
+              : booking
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Error checked out booking:", error);
+      toast.error("Failed to checked out booking. Please try again.");
+    }
+  };
+
   if (loading) {
     return (
       <Box
@@ -246,19 +302,87 @@ const Booking = () => {
                           defaultMessage="canceled"
                         />
                       </Typography>
-                    ) : null}
+                    ) : booking.booking_status === 1 ? (
+                      <Typography variant="body1">
+                        <strong>
+                          {" "}
+                          <FormattedMessage
+                            id="status"
+                            defaultMessage="status"
+                          />
+                          :
+                        </strong>{" "}
+                        <FormattedMessage
+                          id="received"
+                          defaultMessage="received"
+                        />
+                      </Typography>
+                    ) : booking.booking_status === 2 ? (
+                      <Typography variant="body1">
+                        <strong>
+                          {" "}
+                          <FormattedMessage
+                            id="status"
+                            defaultMessage="status"
+                          />
+                          :
+                        </strong>{" "}
+                        <FormattedMessage
+                          id="checked_out"
+                          defaultMessage="checked_out"
+                        />
+                      </Typography>
+                    ) : (
+                      <FormattedMessage
+                        id="not_check_in"
+                        defaultMessage="not_check_in"
+                      />
+                    )}
                   </CardContent>
-                  {booking.booking_status !== 3 ? (
-                    <CardActions>
-                      <Button
-                        variant="contained"
-                        color="error"
-                        onClick={() => handleCancel(booking.id)}
-                      >
-                        <FormattedMessage id="cancel" defaultMessage="cancel" />
-                      </Button>
-                    </CardActions>
-                  ) : null}
+                  <div className="booking-card-actions">
+                    {booking.booking_status === 0 ? (
+                      <CardActions>
+                        <Button
+                          variant="contained"
+                          color="error"
+                          onClick={() => handleCancel(booking.id)}
+                        >
+                          <FormattedMessage
+                            id="cancel"
+                            defaultMessage="cancel"
+                          />
+                        </Button>
+                      </CardActions>
+                    ) : null}
+                    {booking.booking_status === 0 ? (
+                      <CardActions>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => handleReceived(booking.id)}
+                        >
+                          <FormattedMessage
+                            id="received"
+                            defaultMessage="received"
+                          />
+                        </Button>
+                      </CardActions>
+                    ) : null}
+                    {booking.booking_status === 1 ? (
+                      <CardActions>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => handleChecked(booking.id)}
+                        >
+                          <FormattedMessage
+                            id="checked_out"
+                            defaultMessage="checked_out"
+                          />
+                        </Button>
+                      </CardActions>
+                    ) : null}
+                  </div>
                 </Card>
               </Grid>
             ))

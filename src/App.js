@@ -67,14 +67,7 @@ function App() {
               </Layout>
             }
           />
-          <Route
-            path="/reset-password"
-            element={
-              <Layout changeLanguage={changeLanguage}>
-                <ResetPassword />
-              </Layout>
-            }
-          />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route
             path="/about"
             element={
