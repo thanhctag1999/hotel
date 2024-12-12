@@ -53,7 +53,7 @@ const Profile = () => {
         toast.error("Update failed");
       }
     } catch (error) {
-      toast.error("Update failed");
+      toast.error(error.response.data.errors[0].message);
     }
   };
   return (

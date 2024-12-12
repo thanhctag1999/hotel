@@ -273,7 +273,7 @@ export default function List_Hotel() {
           <Grid item xs={6}>
             <Item
               onClick={() => {
-                setSelectedLocation(11);
+                setSelectedLocation(21);
               }}
             >
               <ImageContainer
@@ -288,7 +288,7 @@ export default function List_Hotel() {
           <Grid item xs={6}>
             <Item
               onClick={() => {
-                setSelectedLocation(59);
+                setSelectedLocation(22);
               }}
             >
               <ImageContainer
@@ -303,7 +303,7 @@ export default function List_Hotel() {
           <Grid item xs={4}>
             <Item
               onClick={() => {
-                setSelectedLocation(21);
+                setSelectedLocation(23);
               }}
             >
               <ImageContainer
@@ -318,7 +318,7 @@ export default function List_Hotel() {
           <Grid item xs={4}>
             <Item
               onClick={() => {
-                setSelectedLocation(38);
+                setSelectedLocation(25);
               }}
             >
               <ImageContainer
@@ -333,7 +333,7 @@ export default function List_Hotel() {
           <Grid item xs={4}>
             <Item
               onClick={() => {
-                setSelectedLocation(39);
+                setSelectedLocation(24);
               }}
             >
               <ImageContainer
@@ -342,7 +342,7 @@ export default function List_Hotel() {
                     'url("https://file1.dangcongsan.vn/data/0/images/2024/04/11/upload_673/hue-imperial-gate-1024x683-754-17016811818591749547652.png")',
                 }}
               />
-              <OverlayText>Huế</OverlayText>
+              <OverlayText>Hải Phòng</OverlayText>
             </Item>
           </Grid>
         </Grid>

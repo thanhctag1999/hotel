@@ -339,9 +339,14 @@ const HotelDetail = () => {
                   >
                     <img
                       className="list-hotel-img"
-                      src={`https://api-tltn.onrender.com/${hotel.image_path}`}
+                      src={`${API_URL}/${hotel.image_path}`}
                       alt={hotel.hotel_name}
-                      style={{ width: "100%", borderRadius: 8, objectFit: "cover" }}
+                      style={{
+                        width: "100%",
+                        minHeight: "450px",
+                        borderRadius: 8,
+                        objectFit: "cover",
+                      }}
                       onError={(e) => {
                         e.target.src =
                           "https://grandtouranehotel.com/uploads/product/sp_55.jpg";
@@ -395,7 +400,7 @@ const HotelDetail = () => {
                     >
                       {rooms.map((room) => (
                         <MenuItem key={room.id} value={room.id}>
-                          {room.room_number} -{" "}
+                          Phòng {room.room_number} - Giá:
                           {formatPrice(room.original_price) !==
                           formatPrice(room.new_price) ? (
                             <>
@@ -405,12 +410,17 @@ const HotelDetail = () => {
                                   textDecoration: "line-through",
                                 }}
                               >
+                                {" "}
                                 {formatPrice(room.original_price)} VND
                               </span>{" "}
                               <span
                                 style={{ marginLeft: "10px", color: "red" }}
                               >
-                                {(room.new_price > 0 ? formatPrice(room.new_price): '0')} VND
+                                {" "}
+                                {room.new_price > 0
+                                  ? formatPrice(room.new_price)
+                                  : "0"}{" "}
+                                VND
                               </span>
                             </>
                           ) : (
