@@ -205,8 +205,13 @@ const HotelDetail = () => {
     setNumPeople(event.target.value);
   };
 
-  const handleCheckInDateChange = (event) => {
-    setCheckInDate(event.target.value);
+  const handleCheckInDateChange = (e) => {
+    const selectedDate = e.target.value;
+    if (selectedDate >= today) {
+      setCheckInDate(selectedDate);
+    } else {
+      toast.error("Ngày check in không thể nhỏ hơn ngày hiện tại");
+    }
   };
 
   const handleCheckOutDateChange = (event) => {
@@ -244,6 +249,9 @@ const HotelDetail = () => {
     if (localStorage.getItem("userId") !== null) {
       try {
         setLoading(true);
+        if (checkInDate < today) {
+          toast.error("Ngày check in không thể nhỏ hơn ngày hiện tại");
+        }
         const body = {
           user_id: localStorage.getItem("userId"),
           room_id: selectedRoom,
@@ -478,8 +486,13 @@ const HotelDetail = () => {
                     value={checkInDate}
                     onChange={(e) => handleCheckInDateChange(e)}
                     fullWidth
-                    InputLabelProps={{
-                      shrink: true,
+                    InputBaseComponentProps={{
+                      min: today, // Set the minimum selectable date
+                    }}
+                    InputProps={{
+                      inputProps: {
+                        min: today, // Set the minimum selectable date
+                      },
                     }}
                     sx={{
                       my: 2,
